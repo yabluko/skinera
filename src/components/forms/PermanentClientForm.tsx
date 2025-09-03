@@ -9,6 +9,8 @@ const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   // Автозаповнення email для зареєстрованих користувачів
   useEffect(() => {
@@ -16,6 +18,63 @@ const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
       setEmail(session.user.email);
     }
   }, [session]);
+
+  // Функція для перевірки користувача (email + пароль)
+  const validateUser = async () => {
+    if (!email.trim()) {
+      setValidationError('Введіть email');
+      return false;
+    }
+
+    if (!password.trim()) {
+      setValidationError('Введіть пароль');
+      return false;
+    }
+
+    setIsValidating(true);
+    setValidationError('');
+
+    try {
+      // Перевіряємо credentials через наш API
+      const response = await fetch('/api/auth/validate-credentials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.valid) {
+        setValidationError('');
+        return true;
+      } else {
+        setValidationError(data.message || 'Невірний email або пароль');
+        return false;
+      }
+    } catch (error) {
+      console.error('Validation error:', error);
+      setValidationError('Помилка перевірки користувача');
+      return false;
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  // Обробник кнопки для неавторизованих користувачів
+  const handleContinue = async () => {
+    if (session?.user) {
+      // Для зареєстрованих користувачів просто продовжуємо
+      onContinue?.();
+    } else {
+      // Для неавторизованих перевіряємо існування користувача
+      const isValid = await validateUser();
+      if (isValid) {
+        onContinue?.();
+      }
+    }
+  };
   return (
     <div id="permanent-customer" aria-labelledby="tab-2">
       {session?.user ? (
@@ -86,12 +145,18 @@ const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
       </div>
 
       <div className="mt-8">
+        {validationError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm">{validationError}</p>
+          </div>
+        )}
         <button
           type="button"
-          onClick={onContinue}
-          className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors"
+          onClick={handleContinue}
+          disabled={isValidating}
+          className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {session?.user ? 'Продовжити оформлення' : 'Далі'}
+          {isValidating ? 'Перевіряємо...' : session?.user ? 'Продовжити оформлення' : 'Далі'}
         </button>
       </div>
     </div>

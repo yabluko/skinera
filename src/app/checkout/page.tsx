@@ -11,6 +11,9 @@ const Checkout = () => {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<'new' | 'permanent'>('new');
   const [currentStep, setCurrentStep] = useState<'client-info' | 'delivery-info'>('client-info');
+  const [permanentClientStep, setPermanentClientStep] = useState<'credentials' | 'delivery'>(
+    'credentials'
+  );
 
   // Автоматично встановлюємо таб для зареєстрованих користувачів
   useEffect(() => {
@@ -73,7 +76,21 @@ const Checkout = () => {
                 <TabsSlider activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className="tabs-panels mt-5">
                   {activeTab === 'new' && <NewClientInfoTab />}
-                  {activeTab === 'permanent' && <PermanentClientForm />}
+                  {activeTab === 'permanent' && (
+                    <>
+                      {permanentClientStep === 'credentials' ? (
+                        <PermanentClientForm
+                          onContinue={() => {
+                            setPermanentClientStep('delivery');
+                          }}
+                        />
+                      ) : (
+                        <ClientDeliveryInfoForm
+                          onBack={() => setPermanentClientStep('credentials')}
+                        />
+                      )}
+                    </>
+                  )}
                 </div>
               </>
             )}
