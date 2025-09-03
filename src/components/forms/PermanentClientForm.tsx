@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 interface PermanentClientFormProps {
-  onContinue?: () => void;
+  onContinue?: (data: { email: string; password: string }) => void;
+  initialData?: { email: string; password: string };
 }
 
-const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
+const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormProps = {}) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState('');
 
-  // Автозаповнення email для зареєстрованих користувачів
+  // Автозаповнення email для зареєстрованих користувачів або відновлення даних
   useEffect(() => {
     if (session?.user?.email) {
       setEmail(session.user.email);
+    } else if (initialData) {
+      setEmail(initialData.email);
+      setPassword(initialData.password);
     }
-  }, [session]);
+  }, [session, initialData]);
 
   // Функція для перевірки користувача (email + пароль)
   const validateUser = async () => {
@@ -66,12 +70,12 @@ const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
   const handleContinue = async () => {
     if (session?.user) {
       // Для зареєстрованих користувачів просто продовжуємо
-      onContinue?.();
+      onContinue?.({ email: session.user.email || '', password: '' });
     } else {
       // Для неавторизованих перевіряємо існування користувача
       const isValid = await validateUser();
       if (isValid) {
-        onContinue?.();
+        onContinue?.({ email, password });
       }
     }
   };
@@ -82,6 +86,13 @@ const PermanentClientForm = ({ onContinue }: PermanentClientFormProps = {}) => {
           Ви увійшли як зареєстрований клієнт. Ваші дані автоматично заповнені. Якщо потрібно
           змінити пароль, введіть новий пароль нижче.
         </p>
+      ) : initialData ? (
+        <div className="mb-11">
+          <p className="text-green-600 font-medium mb-2">✅ Дані валідовані успішно</p>
+          <p className="text-gray-600">
+            Ваші дані перевірені. Ви можете продовжити або змінити їх нижче.
+          </p>
+        </div>
       ) : (
         <p className="mb-11">
           Якщо ви зареєстрований клієнт, введіть ваш логін/email та пароль, якщо ви ще не є нашим

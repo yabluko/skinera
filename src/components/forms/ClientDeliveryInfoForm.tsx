@@ -7,12 +7,19 @@ import { Addresses } from '@/interfaces/NovaPoshtaResponse';
 
 interface ClientDeliveryInfoFormProps {
   onBack?: () => void;
+  userData?: {
+    email: string;
+    name?: string;
+    phone?: string;
+  };
 }
 
-const ClientDeliveryInfoForm = ({ onBack }: ClientDeliveryInfoFormProps = {}) => {
+const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProps = {}) => {
   const [currentCity, setCurrentCity] = useState<Addresses | null>(null);
   const [cityName, setCityName] = useState<string>('');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
+  const [deliveryName, setDeliveryName] = useState<string>(userData?.name || '');
+  const [deliveryPhone, setDeliveryPhone] = useState<string>(userData?.phone || '');
 
   // Скидаємо відділення при зміні міста
   const handleCityChange = useCallback((city: Addresses | null, name: string) => {
@@ -25,33 +32,118 @@ const ClientDeliveryInfoForm = ({ onBack }: ClientDeliveryInfoFormProps = {}) =>
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-        <div className="flex flex-col gap-4 md:gap-6 flex-1">
-          <DeliveryCityDropwDown
-            city={currentCity}
-            cityName={cityName}
-            onCityChange={handleCityChange}
-          />
-
-          {isSelectedCity && (
-            <>
-              <DropDown labelName="Варіант доставки" arrOptions={delivery_options} />
-              <DeliveryDepartmentDropDown
-                city={currentCity}
-                selectedDepartment={selectedDepartment}
-                onDepartmentChange={setSelectedDepartment}
-              />
-            </>
-          )}
+      {/* Інформація про користувача */}
+      {userData && (
+        <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">Інформація про замовника</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <p className="text-sm text-gray-600">Email:</p>
+              <p className="font-medium text-gray-900">{userData.email}</p>
+            </div>
+            {userData.name && (
+              <div>
+                <p className="text-sm text-gray-600">Ім'я:</p>
+                <p className="font-medium text-gray-900">{userData.name}</p>
+              </div>
+            )}
+            {userData.phone && (
+              <div>
+                <p className="text-sm text-gray-600">Телефон:</p>
+                <p className="font-medium text-gray-900">{userData.phone}</p>
+              </div>
+            )}
+          </div>
         </div>
+      )}
 
-        <div className="flex flex-col flex-1">
-          {isSelectedCity && <DropDown labelName="Варіант оплати" arrOptions={payment_options} />}
+      {/* Додаткові поля для доставки */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Контактні дані для доставки</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative">
+            <input
+              type="text"
+              id="delivery-name"
+              placeholder=" "
+              value={deliveryName}
+              onChange={e => setDeliveryName(e.target.value)}
+              className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            />
+            <label
+              htmlFor="delivery-name"
+              className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                deliveryName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
+            >
+              Ім'я отримувача*
+            </label>
+            <span
+              className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
+            ></span>
+          </div>
+
+          <div className="relative">
+            <input
+              type="tel"
+              id="delivery-phone"
+              placeholder=" "
+              value={deliveryPhone}
+              onChange={e => setDeliveryPhone(e.target.value)}
+              className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            />
+            <label
+              htmlFor="delivery-phone"
+              className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                deliveryPhone ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
+            >
+              Телефон отримувача*
+            </label>
+            <span
+              className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
+            ></span>
+          </div>
         </div>
       </div>
 
-      {onBack && (
-        <div className="mt-8">
+      {/* Форма доставки */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Доставка</h3>
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+          <div className="flex flex-col gap-4 md:gap-6 flex-1">
+            <DeliveryCityDropwDown
+              city={currentCity}
+              cityName={cityName}
+              onCityChange={handleCityChange}
+            />
+
+            {isSelectedCity && (
+              <>
+                <DropDown labelName="Варіант доставки" arrOptions={delivery_options} />
+                <DeliveryDepartmentDropDown
+                  city={currentCity}
+                  selectedDepartment={selectedDepartment}
+                  onDepartmentChange={setSelectedDepartment}
+                />
+              </>
+            )}
+          </div>
+
+          <div className="flex flex-col flex-1">
+            {isSelectedCity && <DropDown labelName="Варіант оплати" arrOptions={payment_options} />}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex gap-4">
+        {onBack && (
           <button
             type="button"
             onClick={onBack}
@@ -59,8 +151,15 @@ const ClientDeliveryInfoForm = ({ onBack }: ClientDeliveryInfoFormProps = {}) =>
           >
             Назад
           </button>
-        </div>
-      )}
+        )}
+        <button
+          type="button"
+          disabled={!deliveryName.trim() || !deliveryPhone.trim() || !isSelectedCity}
+          className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Завершити замовлення
+        </button>
+      </div>
     </div>
   );
 };

@@ -15,10 +15,49 @@ const Checkout = () => {
     'credentials'
   );
 
+  // Зберігаємо дані користувача для неавторизованих
+  const [permanentClientData, setPermanentClientData] = useState<{
+    email: string;
+    password: string;
+  } | null>(null);
+
+  // Зберігаємо повну інформацію про користувача
+  const [userInfo, setUserInfo] = useState<{
+    email: string;
+    name: string;
+    phone: string;
+  } | null>(null);
+
+  // Функція для отримання інформації про користувача
+  const fetchUserInfo = async (email: string) => {
+    try {
+      const response = await fetch('/api/auth/user-info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserInfo({
+          email: data.email,
+          name: data.name,
+          phone: data.phone || '',
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
   // Автоматично встановлюємо таб для зареєстрованих користувачів
   useEffect(() => {
     if (session?.user) {
       setActiveTab('permanent');
+      // Отримуємо повну інформацію про користувача
+      fetchUserInfo(session.user.email || '');
     }
   }, [session]);
 
@@ -67,7 +106,21 @@ const Checkout = () => {
                 {currentStep === 'client-info' ? (
                   <PermanentClientForm onContinue={() => setCurrentStep('delivery-info')} />
                 ) : (
-                  <ClientDeliveryInfoForm />
+                  <ClientDeliveryInfoForm
+                    onBack={() => setCurrentStep('client-info')}
+                    userData={
+                      userInfo
+                        ? {
+                            email: userInfo.email,
+                            name: userInfo.name,
+                            phone: userInfo.phone,
+                          }
+                        : {
+                            email: session.user.email || '',
+                            name: session.user.name || undefined,
+                          }
+                    }
+                  />
                 )}
               </div>
             ) : (
@@ -80,13 +133,31 @@ const Checkout = () => {
                     <>
                       {permanentClientStep === 'credentials' ? (
                         <PermanentClientForm
-                          onContinue={() => {
+                          initialData={permanentClientData || undefined}
+                          onContinue={async data => {
+                            setPermanentClientData(data);
+                            // Отримуємо повну інформацію про користувача після валідації
+                            await fetchUserInfo(data.email);
                             setPermanentClientStep('delivery');
                           }}
                         />
                       ) : (
                         <ClientDeliveryInfoForm
                           onBack={() => setPermanentClientStep('credentials')}
+                          userData={
+                            userInfo
+                              ? {
+                                  email: userInfo.email,
+                                  name: userInfo.name,
+                                  phone: userInfo.phone,
+                                }
+                              : permanentClientData
+                              ? {
+                                  email: permanentClientData.email,
+                                  name: undefined,
+                                }
+                              : undefined
+                          }
                         />
                       )}
                     </>
