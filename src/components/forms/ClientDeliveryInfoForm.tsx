@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { IMaskInput } from 'react-imask';
 import DropDown from '../common/DropDown';
 import { delivery_options, payment_options } from '@/mockData/nova-postha-mock';
 import DeliveryCityDropwDown from '../common/DeliveryCityDropwDown';
@@ -20,6 +21,7 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [deliveryName, setDeliveryName] = useState<string>(userData?.name || '');
   const [deliveryPhone, setDeliveryPhone] = useState<string>(userData?.phone || '');
+  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
 
   // Скидаємо відділення при зміні міста
   const handleCityChange = useCallback((city: Addresses | null, name: string) => {
@@ -29,6 +31,14 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
   }, []);
 
   const isSelectedCity = currentCity && cityName;
+
+  // Валідація телефону
+  const isValidPhone = () => {
+    if (!deliveryPhone.trim()) return false;
+    const digits = deliveryPhone.replace(/\D/g, '');
+    const rest = digits.startsWith('38') ? digits.slice(2) : digits;
+    return rest.length === 10;
+  };
 
   return (
     <div>
@@ -43,7 +53,7 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
             </div>
             {userData.name && (
               <div>
-                <p className="text-sm text-gray-600">Ім'я:</p>
+                <p className="text-sm text-gray-600">Імʼя:</p>
                 <p className="font-medium text-gray-900">{userData.name}</p>
               </div>
             )}
@@ -77,7 +87,7 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
                 deliveryName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
               }`}
             >
-              Ім'я отримувача*
+              Імʼя отримувача*
             </label>
             <span
               className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
@@ -87,12 +97,25 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
           </div>
 
           <div className="relative">
-            <input
-              type="tel"
+            <IMaskInput
+              mask="+{38} (000) 000 00 00"
+              lazy={!isPhoneFocused}
+              placeholderChar="_"
+              value={deliveryPhone}
+              onAccept={(value: string) => setDeliveryPhone(value)}
+              onFocus={() => setIsPhoneFocused(true)}
+              onBlur={e => {
+                const raw = (e.target as HTMLInputElement).value || '';
+                const digits = raw.replace(/\D/g, '');
+                const rest = digits.startsWith('38') ? digits.slice(2) : digits;
+                if (rest.length === 0) {
+                  setDeliveryPhone('');
+                }
+                setIsPhoneFocused(false);
+              }}
+              inputMode="tel"
               id="delivery-phone"
               placeholder=" "
-              value={deliveryPhone}
-              onChange={e => setDeliveryPhone(e.target.value)}
               className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
             />
             <label
@@ -154,7 +177,7 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
         )}
         <button
           type="button"
-          disabled={!deliveryName.trim() || !deliveryPhone.trim() || !isSelectedCity}
+          disabled={!deliveryName.trim() || !isValidPhone() || !isSelectedCity}
           className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Завершити замовлення
