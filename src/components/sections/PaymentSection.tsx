@@ -19,7 +19,7 @@ const PaymentSection = () => {
         >
           <option value="ukr-post">СБ 19.07 з 09:00 до 18:00</option>
           <option value="meest-post">Meest Пошта (Самовивіз)</option>
-          <option value="newpost-pickUp">Нова пошта (Самовивіз)</option>
+          <option value="newpost-pickUp">Нова пошта (Відділення)</option>
           <option value="newpost-postMachine">Нова пошта (Поштомат)</option>
         </select>
       </div>

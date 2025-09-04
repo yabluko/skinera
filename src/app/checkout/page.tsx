@@ -1,11 +1,12 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import OrderSection from '@/components/sections/OrderSection';
 import PermanentClientForm from '@/components/forms/PermanentClientForm';
 import TabsSlider from '@/components/slider/TabsSlider';
 import NewClientInfoTab from '@/components/tabs/NewClientInfoTab';
 import ClientDeliveryInfoForm from '@/components/forms/ClientDeliveryInfoForm';
+import { usePermanentClientStore } from '@/components/store/permanentClientStore';
 
 const Checkout = () => {
   const { data: session } = useSession();
@@ -14,6 +15,10 @@ const Checkout = () => {
   const [permanentClientStep, setPermanentClientStep] = useState<'credentials' | 'delivery'>(
     'credentials'
   );
+
+  // Store для управління станом постійного клієнта
+  const { setPermanentClientSelected, setClientInfo, setIsOnCheckoutPage } =
+    usePermanentClientStore();
 
   // Зберігаємо дані користувача для неавторизованих
   const [permanentClientData, setPermanentClientData] = useState<{
@@ -29,41 +34,72 @@ const Checkout = () => {
   } | null>(null);
 
   // Функція для отримання інформації про користувача
-  const fetchUserInfo = async (email: string) => {
-    try {
-      const response = await fetch('/api/auth/user-info', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUserInfo({
-          email: data.email,
-          name: data.name,
-          phone: data.phone || '',
+  const fetchUserInfo = useCallback(
+    async (email: string) => {
+      try {
+        const response = await fetch('/api/auth/user-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
         });
+
+        if (response.ok) {
+          const data = await response.json();
+          const userInfoData = {
+            email: data.email,
+            name: data.name,
+            phone: data.phone || '',
+          };
+          setUserInfo(userInfoData);
+
+          // Оновлюємо store
+          setClientInfo({
+            email: data.email,
+            name: data.name,
+            phone: data.phone || '',
+            isValidated: true,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
       }
-    } catch (error) {
-      console.error('Error fetching user info:', error);
-    }
-  };
+    },
+    [setClientInfo]
+  );
+
+  // Встановлюємо що ми на сторінці checkout
+  useEffect(() => {
+    setIsOnCheckoutPage(true);
+
+    // Очищуємо стан при виході зі сторінки
+    return () => {
+      setIsOnCheckoutPage(false);
+    };
+  }, [setIsOnCheckoutPage]);
 
   // Автоматично встановлюємо таб для зареєстрованих користувачів
   useEffect(() => {
     if (session?.user) {
       setActiveTab('permanent');
+      setPermanentClientSelected(true);
       // Отримуємо повну інформацію про користувача
       fetchUserInfo(session.user.email || '');
     }
-  }, [session]);
+  }, [session, setPermanentClientSelected, fetchUserInfo]);
+
+  // Оновлюємо store при зміні активного табу
+  useEffect(() => {
+    setPermanentClientSelected(activeTab === 'permanent');
+    if (activeTab === 'new') {
+      setClientInfo(null);
+    }
+  }, [activeTab, setPermanentClientSelected, setClientInfo]);
 
   return (
     <div className="flex flex-col gap-8 md:gap-16 lg:gap-32 max-w-6xl mx-auto py-20  lg:py-32 px-4 md:px-6 lg:px-0">
-      <section className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-3 px-4">
+      <section className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-10 px-4">
         {/* <ClientInfoForm /> */}
         <div className="flex-1 lg:pr-9 w-full">
           <h1 id="tabs-title" className="text-2xl md:text-3xl font-semibold mb-6 md:mb-11">

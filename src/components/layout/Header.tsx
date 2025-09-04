@@ -9,11 +9,17 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import CartButton from './CartButton';
 import FavoritesButton from './FavoritesButton';
 import AuthModal from '../auth/AuthModal';
+import { usePermanentClientStore } from '../store/permanentClientStore';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { data: session } = useSession();
+  const { shouldShowPermanentClientName, clientInfo } = usePermanentClientStore();
+
+  // Визначаємо яке ім'я показувати
+  const displayName =
+    session?.user?.name || (shouldShowPermanentClientName() ? clientInfo?.name : null);
 
   const handleUserIconClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,13 +49,13 @@ const Header = () => {
             </div>
             <FavoritesButton />
             <CartButton />
-            {session ? (
+            {session || displayName ? (
               <Link
                 href="/account"
                 className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors"
               >
                 <UserIcon className="w-5 h-5" />
-                <span>{session.user?.name}</span>
+                <span>{displayName}</span>
               </Link>
             ) : (
               <button
@@ -96,14 +102,14 @@ const Header = () => {
               <CartButton isMobile />
             </div>
             <div className="px-4  border-t border-gray-100">
-              {session ? (
+              {session || displayName ? (
                 <Link
                   href="/account"
                   className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <UserIcon className="w-5 h-5" />
-                  <span>{session.user?.name}</span>
+                  <span>{displayName}</span>
                 </Link>
               ) : (
                 <button

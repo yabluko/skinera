@@ -13,7 +13,7 @@ export const favCities: string[] = [
 ];
 
 export const delivery_options = [
-  { id: 'newpost-pickup', label: 'Нова Пошта (Самовивіз)', value: 'newpost-pickup' },
+  { id: 'newpost-pickup', label: 'Нова Пошта (Відділення)', value: 'newpost-pickup' },
   { id: 'newpost-postmachine', label: 'Нова Пошта (Поштомат)', value: 'newpost-postmachine' },
 ];
 

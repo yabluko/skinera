@@ -14,7 +14,7 @@ const NOVAPOSHTA_DEPTS_DEFAULTS = {
 } as const;
 
 interface DeliveryDepartmentDropDownProps {
-  city: Addresses;
+  city: Addresses | null;
   selectedDepartment: string;
   onDepartmentChange: (department: string) => void;
 }
@@ -103,6 +103,8 @@ const DeliveryDepartmentDropDown = ({
     (searchQuery: string) => {
       setDepartmentName(searchQuery);
 
+      if (!city?.DeliveryCity) return;
+
       if (!searchQuery.trim()) {
         // Якщо пошук порожній, показуємо всі відділення
         fetchDepartments(city.DeliveryCity);
@@ -111,7 +113,7 @@ const DeliveryDepartmentDropDown = ({
         fetchDepartments(city.DeliveryCity, searchQuery);
       }
     },
-    [city.DeliveryCity, fetchDepartments]
+    [city?.DeliveryCity, fetchDepartments]
   );
 
   const handleDepartmentSelect = useCallback(
@@ -125,8 +127,10 @@ const DeliveryDepartmentDropDown = ({
   const handleClearDepartment = useCallback(() => {
     setDepartmentName('');
     onDepartmentChange('');
-    fetchDepartments(city.DeliveryCity);
-  }, [city.DeliveryCity, fetchDepartments, onDepartmentChange]);
+    if (city?.DeliveryCity) {
+      fetchDepartments(city.DeliveryCity);
+    }
+  }, [city?.DeliveryCity, fetchDepartments, onDepartmentChange]);
 
   return (
     <div>
