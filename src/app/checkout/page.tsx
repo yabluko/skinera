@@ -33,6 +33,14 @@ const Checkout = () => {
     phone: string;
   } | null>(null);
 
+  // Зберігаємо особисті дані введені користувачем
+  const [personalData, setPersonalData] = useState<{
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  } | null>(null);
+
   // Функція для отримання інформації про користувача
   const fetchUserInfo = useCallback(
     async (email: string) => {
@@ -113,18 +121,9 @@ const Checkout = () => {
               // Для зареєстрованих користувачів показуємо кроки оформлення
               <div>
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    Оформлення замовлення
-                  </h2>
                   <p className="text-gray-600">
                     Ви увійшли як{' '}
                     <span className="font-medium text-brand-600">{session.user.name}</span>
-                    {currentStep === 'client-info' && (
-                      <span className="block text-sm mt-1">
-                        Будь ласка, заповніть обов&apos;язкові поля (ім&apos;я, прізвище, телефон)
-                        для відправки замовлення.
-                      </span>
-                    )}
                     {currentStep === 'delivery-info' && (
                       <span className="block text-sm mt-1">
                         Особисті дані заповнені. Тепер вкажіть інформацію про доставку.
@@ -155,7 +154,16 @@ const Checkout = () => {
 
                 {currentStep === 'client-info' ? (
                   <PermanentClientForm
-                    onContinue={() => setCurrentStep('delivery-info')}
+                    onContinue={data => {
+                      // Зберігаємо особисті дані
+                      setPersonalData({
+                        email: data.email,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        phone: data.phone,
+                      });
+                      setCurrentStep('delivery-info');
+                    }}
                     userData={
                       userInfo
                         ? {
@@ -173,7 +181,13 @@ const Checkout = () => {
                   <ClientDeliveryInfoForm
                     onBack={() => setCurrentStep('client-info')}
                     userData={
-                      userInfo
+                      personalData
+                        ? {
+                            email: personalData.email,
+                            name: `${personalData.firstName} ${personalData.lastName}`.trim(),
+                            phone: personalData.phone,
+                          }
+                        : userInfo
                         ? {
                             email: userInfo.email,
                             name: userInfo.name,
@@ -199,7 +213,14 @@ const Checkout = () => {
                         <PermanentClientForm
                           initialData={permanentClientData || undefined}
                           onContinue={async data => {
-                            setPermanentClientData(data);
+                            setPermanentClientData({ email: data.email, password: data.password });
+                            // Зберігаємо особисті дані
+                            setPersonalData({
+                              email: data.email,
+                              firstName: data.firstName,
+                              lastName: data.lastName,
+                              phone: data.phone,
+                            });
                             // Отримуємо повну інформацію про користувача після валідації
                             await fetchUserInfo(data.email);
                             setPermanentClientStep('delivery');
@@ -209,7 +230,13 @@ const Checkout = () => {
                         <ClientDeliveryInfoForm
                           onBack={() => setPermanentClientStep('credentials')}
                           userData={
-                            userInfo
+                            personalData
+                              ? {
+                                  email: personalData.email,
+                                  name: `${personalData.firstName} ${personalData.lastName}`.trim(),
+                                  phone: personalData.phone,
+                                }
+                              : userInfo
                               ? {
                                   email: userInfo.email,
                                   name: userInfo.name,

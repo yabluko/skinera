@@ -3,7 +3,13 @@ import { useSession } from 'next-auth/react';
 import { IMaskInput } from 'react-imask';
 
 interface PermanentClientFormProps {
-  onContinue?: (data: { email: string; password: string }) => void;
+  onContinue?: (data: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  }) => void;
   initialData?: { email: string; password: string };
   userData?: {
     email: string;
@@ -148,13 +154,25 @@ const PermanentClientForm = ({
     }
 
     if (session?.user) {
-      // Для зареєстрованих користувачів просто продовжуємо
-      onContinue?.({ email: session.user.email || '', password: '' });
+      // Для зареєстрованих користувачів передаємо всі дані
+      onContinue?.({
+        email: session.user.email || '',
+        password: '',
+        firstName,
+        lastName,
+        phone,
+      });
     } else {
       // Для неавторизованих перевіряємо існування користувача
       const isValid = await validateUser();
       if (isValid) {
-        onContinue?.({ email, password });
+        onContinue?.({
+          email,
+          password,
+          firstName,
+          lastName,
+          phone,
+        });
       }
     }
   };
@@ -310,37 +328,6 @@ const PermanentClientForm = ({
         origin-left peer-focus:w-full z-10"
           ></span>
         </div>
-      </div>
-
-      {/* Третій ряд: Пароль */}
-      <div className="flex gap-4 md:gap-20 flex-col md:flex-row">
-        <div className="relative flex-1">
-          <input
-            type="password"
-            id="permanent-password"
-            placeholder=" "
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
-          />
-          <label
-            htmlFor="permanent-password"
-            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-        peer-focus:-top-6 peer-focus:text-[13px] ${
-          password ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-        }`}
-          >
-            {session?.user ? 'Пароль (залиште пустим, якщо не хочете змінювати)' : 'Пароль'}
-          </label>
-          <span
-            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-        transition-all duration-500 ease-in-out 
-        origin-left peer-focus:w-full z-10"
-          ></span>
-        </div>
-
-        {/* Пусте місце для симетрії */}
-        <div className="flex-1 hidden md:block"></div>
       </div>
 
       <div className="mt-8">
