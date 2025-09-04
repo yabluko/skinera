@@ -34,12 +34,11 @@ const PaymentSection = () => {
           Варінати оплати*
         </label>
         <select
-          name="delivery-option"
+          name="payment-option"
           className="w-full border-none focus:ring-0 appearance-none bg-transparent pr-10"
         >
-          <option value="bank-card">Оплата Банківською карткою</option>
-          <option value="cash">Готівка</option>
-          <option value="google-pay">Google Pay</option>
+          <option value="bank-card">Оплата банківською картою</option>
+          <option value="cash-on-delivery">Післяплата</option>
         </select>
       </div>
     </div>

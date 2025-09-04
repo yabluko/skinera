@@ -7,6 +7,9 @@ export const favCities: string[] = [
   'Львів',
   'Кривий Ріг',
   'Миколаїв',
+  'Івано-Франківськ',
+  'Вінниця',
+  'Рівне',
 ];
 
 export const delivery_options = [
@@ -15,7 +18,6 @@ export const delivery_options = [
 ];
 
 export const payment_options = [
-  { id: 'google-pay', label: 'Google pay', value: 'google-pay' },
   { id: 'bank-card', label: 'Оплата банківською картою', value: 'bank-card' },
-  { id: 'cash', label: 'Готівка', value: 'cash' },
+  { id: 'cash-on-delivery', label: 'Післяплата', value: 'cash-on-delivery' },
 ];
