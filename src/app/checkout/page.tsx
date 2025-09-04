@@ -84,6 +84,8 @@ const Checkout = () => {
     if (session?.user) {
       setActiveTab('permanent');
       setPermanentClientSelected(true);
+      // Для авторизованих користувачів починаємо з особистих даних
+      setCurrentStep('client-info');
       // Отримуємо повну інформацію про користувача
       fetchUserInfo(session.user.email || '');
     }
@@ -117,6 +119,17 @@ const Checkout = () => {
                   <p className="text-gray-600">
                     Ви увійшли як{' '}
                     <span className="font-medium text-brand-600">{session.user.name}</span>
+                    {currentStep === 'client-info' && (
+                      <span className="block text-sm mt-1">
+                        Будь ласка, заповніть обов&apos;язкові поля (ім&apos;я, прізвище, телефон)
+                        для відправки замовлення.
+                      </span>
+                    )}
+                    {currentStep === 'delivery-info' && (
+                      <span className="block text-sm mt-1">
+                        Особисті дані заповнені. Тепер вкажіть інформацію про доставку.
+                      </span>
+                    )}
                   </p>
                 </div>
 
@@ -131,16 +144,31 @@ const Checkout = () => {
                     1 Особисті дані
                   </h3>
                   <h3
-                    className={`font-semibold text-lg md:text-xl transition-colors duration-200 ${
+                    className={`font-semibold text-lg md:text-xl cursor-pointer transition-colors duration-200 ${
                       currentStep === 'delivery-info' ? 'text-brand-600' : 'text-[#a6a2a2]'
                     }`}
+                    onClick={() => setCurrentStep('delivery-info')}
                   >
                     2 Інформація про доставку
                   </h3>
                 </div>
 
                 {currentStep === 'client-info' ? (
-                  <PermanentClientForm onContinue={() => setCurrentStep('delivery-info')} />
+                  <PermanentClientForm
+                    onContinue={() => setCurrentStep('delivery-info')}
+                    userData={
+                      userInfo
+                        ? {
+                            email: userInfo.email,
+                            name: userInfo.name,
+                            phone: userInfo.phone,
+                          }
+                        : {
+                            email: session.user.email || '',
+                            name: session.user.name || undefined,
+                          }
+                    }
+                  />
                 ) : (
                   <ClientDeliveryInfoForm
                     onBack={() => setCurrentStep('client-info')}

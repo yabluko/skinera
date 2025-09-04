@@ -1,27 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { IMaskInput } from 'react-imask';
 
 interface PermanentClientFormProps {
   onContinue?: (data: { email: string; password: string }) => void;
   initialData?: { email: string; password: string };
+  userData?: {
+    email: string;
+    name?: string;
+    phone?: string;
+  };
 }
 
-const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormProps = {}) => {
+const PermanentClientForm = ({
+  onContinue,
+  initialData,
+  userData,
+}: PermanentClientFormProps = {}) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState('');
 
-  // Автозаповнення email для зареєстрованих користувачів або відновлення даних
+  // Функція для розділення повного імені на ім'я та прізвище
+  const splitFullName = (fullName: string) => {
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+    return { firstName, lastName };
+  };
+
+  // Автозаповнення даних для зареєстрованих користувачів або відновлення даних
   useEffect(() => {
     if (session?.user?.email) {
       setEmail(session.user.email);
+      if (session.user.name) {
+        const { firstName, lastName } = splitFullName(session.user.name);
+        setFirstName(firstName);
+        setLastName(lastName);
+      }
     } else if (initialData) {
       setEmail(initialData.email);
       setPassword(initialData.password);
     }
-  }, [session, initialData]);
+
+    // Заповнюємо дані з userData (отримані з API)
+    if (userData) {
+      setEmail(userData.email);
+      if (userData.name) {
+        const { firstName, lastName } = splitFullName(userData.name);
+        setFirstName(firstName);
+        setLastName(lastName);
+      }
+      setPhone(userData.phone || '');
+    }
+  }, [session, initialData, userData]);
 
   // Функція для перевірки користувача (email + пароль)
   const validateUser = async () => {
@@ -66,8 +104,49 @@ const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormPro
     }
   };
 
+  // Валідація обов'язкових полів
+  const validateRequiredFields = () => {
+    const errors = [];
+
+    if (!firstName.trim()) {
+      errors.push("Ім'я обов'язкове для заповнення");
+    }
+
+    if (!lastName.trim()) {
+      errors.push("Прізвище обов'язкове для заповнення");
+    }
+
+    if (!phone.trim()) {
+      errors.push("Телефон обов'язковий для заповнення");
+    } else {
+      // Перевіряємо чи телефон повністю заповнений (10 цифр після +38)
+      const digits = phone.replace(/\D/g, '');
+      const rest = digits.startsWith('38') ? digits.slice(2) : digits;
+      if (rest.length < 10) {
+        errors.push('Введіть повний номер телефону');
+      }
+    }
+
+    if (!email.trim()) {
+      errors.push("Email обов'язковий для заповнення");
+    }
+
+    if (errors.length > 0) {
+      setValidationError(errors.join(', '));
+      return false;
+    }
+
+    setValidationError('');
+    return true;
+  };
+
   // Обробник кнопки для неавторизованих користувачів
   const handleContinue = async () => {
+    // Спочатку валідуємо обов'язкові поля
+    if (!validateRequiredFields()) {
+      return;
+    }
+
     if (session?.user) {
       // Для зареєстрованих користувачів просто продовжуємо
       onContinue?.({ email: session.user.email || '', password: '' });
@@ -82,29 +161,132 @@ const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormPro
   return (
     <div id="permanent-customer" aria-labelledby="tab-2">
       {session?.user ? (
-        <p className="mb-11">
-          Ви увійшли як зареєстрований клієнт. Ваші дані автоматично заповнені. Якщо потрібно
-          змінити пароль, введіть новий пароль нижче.
-        </p>
+        <div className="mb-8">
+          <p className="text-gray-700 mb-2">
+            Заповніть обов&apos;язкові поля для відправки замовлення.
+          </p>
+        </div>
       ) : initialData ? (
-        <div className="mb-11">
+        <div className="mb-8">
           <p className="text-green-600 font-medium mb-2">✅ Дані валідовані успішно</p>
-          <p className="text-gray-600">
-            Ваші дані перевірені. Ви можете продовжити або змінити їх нижче.
+          <p className="text-gray-600 mb-2">
+            Ваші дані перевірені. Заповніть обов&apos;язкові поля нижче.
+          </p>
+          <p className="text-sm text-gray-600">
+            <span className="text-red-500">*</span> Ім&apos;я, прізвище та телефон -
+            обов&apos;язкові поля
           </p>
         </div>
       ) : (
-        <p className="mb-11">
-          Якщо ви зареєстрований клієнт, введіть ваш логін/email та пароль, якщо ви ще не є нашим
-          клієнтом, то перейдіть у розділ Новий покупець і заповніть поля потрібною інформацією.{' '}
-        </p>
+        <div className="mb-8">
+          <p className="text-gray-700 mb-2">
+            Якщо ви зареєстрований клієнт, заповніть всі поля нижче. Якщо ви ще не є нашим клієнтом,
+            то перейдіть у розділ &ldquo;Новий покупець&rdquo;.
+          </p>
+          <p className="text-sm text-gray-600">
+            <span className="text-red-500">*</span> Ім&apos;я, прізвище та телефон -
+            обов&apos;язкові поля
+          </p>
+        </div>
       )}
 
-      <div className="flex gap-20">
+      {/* Перший ряд: Ім'я та Прізвище */}
+      <div className="flex gap-4 md:gap-20 mb-8 flex-col md:flex-row">
         <div className="relative flex-1">
           <input
             type="text"
-            id="parmanent-email"
+            id="permanent-firstName"
+            placeholder=" "
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+          />
+          <label
+            htmlFor="permanent-firstName"
+            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+        peer-focus:-top-6 peer-focus:text-[13px] ${
+          firstName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+        }`}
+          >
+            Ім&apos;я <span className="text-red-500">*</span>
+          </label>
+          <span
+            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+        transition-all duration-500 ease-in-out 
+        origin-left peer-focus:w-full z-10"
+          ></span>
+        </div>
+
+        <div className="relative flex-1">
+          <input
+            type="text"
+            id="permanent-lastName"
+            placeholder=" "
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+          />
+          <label
+            htmlFor="permanent-lastName"
+            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+        peer-focus:-top-6 peer-focus:text-[13px] ${
+          lastName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+        }`}
+          >
+            Прізвище <span className="text-red-500">*</span>
+          </label>
+          <span
+            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+        transition-all duration-500 ease-in-out 
+        origin-left peer-focus:w-full z-10"
+          ></span>
+        </div>
+      </div>
+
+      {/* Другий ряд: Телефон та Email */}
+      <div className="flex gap-4 md:gap-20 mb-8 flex-col md:flex-row">
+        <div className="relative flex-1">
+          <IMaskInput
+            mask="+{38} (000) 000 00 00"
+            lazy={!isPhoneFocused}
+            placeholderChar="_"
+            value={phone}
+            onAccept={(value: string) => setPhone(value)}
+            onFocus={() => setIsPhoneFocused(true)}
+            onBlur={e => {
+              const raw = (e.target as HTMLInputElement).value || '';
+              const digits = raw.replace(/\D/g, '');
+              const rest = digits.startsWith('38') ? digits.slice(2) : digits;
+              if (rest.length === 0) {
+                setPhone('');
+              }
+              setIsPhoneFocused(false);
+            }}
+            inputMode="tel"
+            id="permanent-phone"
+            placeholder=" "
+            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+          />
+          <label
+            htmlFor="permanent-phone"
+            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+        peer-focus:-top-6 peer-focus:text-[13px] ${
+          phone ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+        }`}
+          >
+            Телефон <span className="text-red-500">*</span>
+          </label>
+          <span
+            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+        transition-all duration-500 ease-in-out 
+        origin-left peer-focus:w-full z-10"
+          ></span>
+        </div>
+
+        <div className="relative flex-1">
+          <input
+            type="text"
+            id="permanent-email"
             placeholder=" "
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -114,7 +296,7 @@ const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormPro
             }`}
           />
           <label
-            htmlFor="parmanent-email"
+            htmlFor="permanent-email"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
         peer-focus:-top-6 peer-focus:text-[13px] ${
           email ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
@@ -128,24 +310,27 @@ const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormPro
         origin-left peer-focus:w-full z-10"
           ></span>
         </div>
+      </div>
 
+      {/* Третій ряд: Пароль */}
+      <div className="flex gap-4 md:gap-20 flex-col md:flex-row">
         <div className="relative flex-1">
           <input
             type="password"
-            id="parmanent-password"
+            id="permanent-password"
             placeholder=" "
             value={password}
             onChange={e => setPassword(e.target.value)}
             className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <label
-            htmlFor="parmanent-password"
+            htmlFor="permanent-password"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
         peer-focus:-top-6 peer-focus:text-[13px] ${
           password ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
         }`}
           >
-            Пароль
+            {session?.user ? 'Пароль (залиште пустим, якщо не хочете змінювати)' : 'Пароль'}
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
@@ -153,6 +338,9 @@ const PermanentClientForm = ({ onContinue, initialData }: PermanentClientFormPro
         origin-left peer-focus:w-full z-10"
           ></span>
         </div>
+
+        {/* Пусте місце для симетрії */}
+        <div className="flex-1 hidden md:block"></div>
       </div>
 
       <div className="mt-8">
