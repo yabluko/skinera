@@ -8,6 +8,7 @@ import { Addresses } from '@/interfaces/NovaPoshtaResponse';
 
 interface ClientDeliveryInfoFormProps {
   onBack?: () => void;
+  onOrderComplete?: () => void;
   userData?: {
     email: string;
     name?: string;
@@ -15,7 +16,11 @@ interface ClientDeliveryInfoFormProps {
   };
 }
 
-const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProps = {}) => {
+const ClientDeliveryInfoForm = ({
+  onBack,
+  onOrderComplete,
+  userData,
+}: ClientDeliveryInfoFormProps = {}) => {
   const [currentCity, setCurrentCity] = useState<Addresses | null>(null);
   const [cityName, setCityName] = useState<string>('');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
@@ -46,7 +51,7 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
       {userData && (
         <div className="mb-8 p-4 bg-gray-50 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Інформація про замовника</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 ">
             <div>
               <p className="text-sm text-gray-600">Email:</p>
               <p className="font-medium text-gray-900">{userData.email}</p>
@@ -178,6 +183,16 @@ const ClientDeliveryInfoForm = ({ onBack, userData }: ClientDeliveryInfoFormProp
         <button
           type="button"
           disabled={!deliveryName.trim() || !isValidPhone() || !isSelectedCity}
+          onClick={() => {
+            // Тут можна додати логіку відправки замовлення на сервер
+            console.log('🎉 Замовлення завершено!');
+
+            // Викликаємо callback для очищення localStorage
+            onOrderComplete?.();
+
+            // Можна також показати повідомлення про успіх або перенаправити користувача
+            alert('Замовлення успішно оформлено!');
+          }}
           className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Завершити замовлення

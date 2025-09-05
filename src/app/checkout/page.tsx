@@ -1,9 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import OrderSection from '@/components/sections/OrderSection';
 import UniversalClientForm from '@/components/forms/UniversalClientForm';
 import ClientDeliveryInfoForm from '@/components/forms/ClientDeliveryInfoForm';
+
+const CHECKOUT_DATA_KEY = 'skinera_checkout_personal_data';
 
 const Checkout = () => {
   const { data: session } = useSession();
@@ -16,6 +18,47 @@ const Checkout = () => {
     lastName: string;
     phone: string;
   } | null>(null);
+
+  // Завантажуємо збережені дані з localStorage при ініціалізації
+  useEffect(() => {
+    try {
+      const savedData = localStorage.getItem(CHECKOUT_DATA_KEY);
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        setPersonalData(parsedData);
+        console.log('✅ Завантажено збережені дані з localStorage:', parsedData);
+      }
+    } catch (error) {
+      console.error('❌ Помилка завантаження даних з localStorage:', error);
+      // Очищаємо пошкоджені дані
+      localStorage.removeItem(CHECKOUT_DATA_KEY);
+    }
+  }, []);
+
+  // Функція для збереження даних в localStorage
+  const savePersonalDataToStorage = (data: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  }) => {
+    try {
+      localStorage.setItem(CHECKOUT_DATA_KEY, JSON.stringify(data));
+      console.log('✅ Дані збережено в localStorage:', data);
+    } catch (error) {
+      console.error('❌ Помилка збереження в localStorage:', error);
+    }
+  };
+
+  // Функція для очищення збережених даних
+  const clearPersonalDataFromStorage = () => {
+    try {
+      localStorage.removeItem(CHECKOUT_DATA_KEY);
+      console.log('✅ Дані очищено з localStorage');
+    } catch (error) {
+      console.error('❌ Помилка очищення localStorage:', error);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8 md:gap-16 lg:gap-32 max-w-6xl mx-auto py-20  lg:py-32 px-4 md:px-6 lg:px-0">
@@ -48,20 +91,32 @@ const Checkout = () => {
 
             {currentStep === 'client-info' ? (
               <UniversalClientForm
+                initialData={personalData}
                 onContinue={data => {
-                  // Зберігаємо особисті дані
-                  setPersonalData({
+                  // Зберігаємо особисті дані в state та localStorage
+                  const personalDataToSave = {
                     email: data.email,
                     firstName: data.firstName,
                     lastName: data.lastName,
                     phone: data.phone,
-                  });
+                  };
+                  setPersonalData(personalDataToSave);
+                  savePersonalDataToStorage(personalDataToSave);
                   setCurrentStep('delivery-info');
                 }}
+                onClearSavedData={clearPersonalDataFromStorage}
               />
             ) : (
               <ClientDeliveryInfoForm
                 onBack={() => setCurrentStep('client-info')}
+                onOrderComplete={() => {
+                  // Очищаємо збережені дані після успішного замовлення
+                  clearPersonalDataFromStorage();
+                  setPersonalData(null);
+
+                  // Можна додати логіку перенаправлення або показу сторінки успіху
+                  console.log('🎉 Замовлення завершено, дані очищено');
+                }}
                 userData={
                   personalData
                     ? {

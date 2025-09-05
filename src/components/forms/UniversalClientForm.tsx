@@ -3,15 +3,26 @@ import { useSession } from 'next-auth/react';
 import { IMaskInput } from 'react-imask';
 
 interface UniversalClientFormProps {
+  initialData?: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  } | null;
   onContinue?: (data: {
     email: string;
     firstName: string;
     lastName: string;
     phone: string;
   }) => void;
+  onClearSavedData?: () => void;
 }
 
-const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
+const UniversalClientForm = ({
+  initialData,
+  onContinue,
+  onClearSavedData,
+}: UniversalClientFormProps) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -55,9 +66,20 @@ const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
     }
   };
 
-  // Автозаповнення даних для зареєстрованих користувачів
+  // Автозаповнення даних для зареєстрованих користувачів та initialData
   useEffect(() => {
     const loadUserData = async () => {
+      // Спочатку перевіряємо чи є initialData (збережені дані з localStorage)
+      if (initialData) {
+        console.log('✅ Завантажуємо initialData:', initialData);
+        setEmail(initialData.email || '');
+        setFirstName(initialData.firstName || '');
+        setLastName(initialData.lastName || '');
+        setPhone(initialData.phone || '');
+        return; // Якщо є initialData, не завантажуємо з session/API
+      }
+
+      // Якщо немає initialData, завантажуємо дані з session
       if (session?.user?.email) {
         setEmail(session.user.email);
 
@@ -82,7 +104,7 @@ const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
     };
 
     loadUserData();
-  }, [session]);
+  }, [session, initialData]);
 
   // Валідація обов'язкових полів
   const validateRequiredFields = () => {
@@ -212,6 +234,40 @@ const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
           <p className="text-gray-700 mb-2">
             Заповніть ваші особисті дані для оформлення замовлення.
           </p>
+        </div>
+      )}
+
+      {/* Індикатор збережених даних */}
+      {initialData && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p className="text-green-800 text-sm font-medium">Завантажено збережені дані</p>
+            </div>
+            {onClearSavedData && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClearSavedData();
+                  // Очищаємо поля форми
+                  setEmail(session?.user?.email || '');
+                  setFirstName('');
+                  setLastName('');
+                  setPhone('');
+                }}
+                className="text-green-600 hover:text-green-800 text-sm underline"
+              >
+                Очистити
+              </button>
+            )}
+          </div>
         </div>
       )}
 
