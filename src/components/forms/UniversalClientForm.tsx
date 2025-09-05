@@ -2,36 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { IMaskInput } from 'react-imask';
 
-interface PermanentClientFormProps {
+interface UniversalClientFormProps {
   onContinue?: (data: {
     email: string;
-    password: string;
     firstName: string;
     lastName: string;
     phone: string;
   }) => void;
-  initialData?: { email: string; password: string };
-  userData?: {
-    email: string;
-    name?: string;
-    phone?: string;
-  };
 }
 
-const PermanentClientForm = ({
-  onContinue,
-  initialData,
-  userData,
-}: PermanentClientFormProps = {}) => {
+const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
-  const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Функція для розділення повного імені на ім'я та прізвище
   const splitFullName = (fullName: string) => {
@@ -41,74 +29,60 @@ const PermanentClientForm = ({
     return { firstName, lastName };
   };
 
-  // Автозаповнення даних для зареєстрованих користувачів або відновлення даних
-  useEffect(() => {
-    if (session?.user?.email) {
-      setEmail(session.user.email);
-      if (session.user.name) {
-        const { firstName, lastName } = splitFullName(session.user.name);
-        setFirstName(firstName);
-        setLastName(lastName);
-      }
-    } else if (initialData) {
-      setEmail(initialData.email);
-      setPassword(initialData.password);
-    }
-
-    // Заповнюємо дані з userData (отримані з API)
-    if (userData) {
-      setEmail(userData.email);
-      if (userData.name) {
-        const { firstName, lastName } = splitFullName(userData.name);
-        setFirstName(firstName);
-        setLastName(lastName);
-      }
-      setPhone(userData.phone || '');
-    }
-  }, [session, initialData, userData]);
-
-  // Функція для перевірки користувача (email + пароль)
-  const validateUser = async () => {
-    if (!email.trim()) {
-      setValidationError('Введіть email');
-      return false;
-    }
-
-    if (!password.trim()) {
-      setValidationError('Введіть пароль');
-      return false;
-    }
-
-    setIsValidating(true);
-    setValidationError('');
-
+  // Функція для отримання інформації про користувача з API
+  const fetchUserInfo = async (email: string) => {
     try {
-      // Перевіряємо credentials через наш API
-      const response = await fetch('/api/auth/validate-credentials', {
+      const response = await fetch('/api/auth/user-info', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.valid) {
-        setValidationError('');
-        return true;
-      } else {
-        setValidationError(data.message || 'Невірний email або пароль');
-        return false;
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          email: data.email,
+          name: data.name,
+          phone: data.phone || '',
+        };
       }
+      return null;
     } catch (error) {
-      console.error('Validation error:', error);
-      setValidationError('Помилка перевірки користувача');
-      return false;
-    } finally {
-      setIsValidating(false);
+      console.error('Error fetching user info:', error);
+      return null;
     }
   };
+
+  // Автозаповнення даних для зареєстрованих користувачів
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (session?.user?.email) {
+        setEmail(session.user.email);
+
+        // Спочатку заповнюємо з session
+        if (session.user.name) {
+          const { firstName, lastName } = splitFullName(session.user.name);
+          setFirstName(firstName);
+          setLastName(lastName);
+        }
+
+        // Потім підтягуємо додаткові дані з API
+        const userData = await fetchUserInfo(session.user.email);
+        if (userData) {
+          if (userData.name) {
+            const { firstName, lastName } = splitFullName(userData.name);
+            setFirstName(firstName);
+            setLastName(lastName);
+          }
+          setPhone(userData.phone || '');
+        }
+      }
+    };
+
+    loadUserData();
+  }, [session]);
 
   // Валідація обов'язкових полів
   const validateRequiredFields = () => {
@@ -133,8 +107,12 @@ const PermanentClientForm = ({
       }
     }
 
-    if (!email.trim()) {
-      errors.push("Email обов'язковий для заповнення");
+    if (email.trim()) {
+      // Валідація email тільки якщо він заповнений
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errors.push('Введіть коректний email');
+      }
     }
 
     if (errors.length > 0) {
@@ -146,64 +124,77 @@ const PermanentClientForm = ({
     return true;
   };
 
-  // Обробник кнопки для неавторизованих користувачів
+  // Обробник кнопки продовжити
   const handleContinue = async () => {
-    // Спочатку валідуємо обов'язкові поля
+    // Валідуємо обов'язкові поля
     if (!validateRequiredFields()) {
       return;
     }
 
-    if (session?.user) {
-      // Для зареєстрованих користувачів передаємо всі дані
+    setIsLoading(true);
+    setValidationError('');
+
+    try {
+      // Для неавторизованих користувачів перевіряємо чи існує користувач з таким email
+      if (!session?.user) {
+        const response = await fetch('/api/auth/user-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          // Якщо користувач існує, підтягуємо його дані
+          if (userData.name) {
+            const { firstName: dbFirstName, lastName: dbLastName } = splitFullName(userData.name);
+            // Оновлюємо дані тільки якщо вони не заповнені або відрізняються
+            if (!firstName || !lastName) {
+              setFirstName(dbFirstName || firstName);
+              setLastName(dbLastName || lastName);
+            }
+          }
+          if (userData.phone && !phone) {
+            setPhone(userData.phone);
+          }
+        }
+      }
+
+      // Передаємо дані далі
       onContinue?.({
-        email: session.user.email || '',
-        password: '',
+        email,
         firstName,
         lastName,
         phone,
       });
-    } else {
-      // Для неавторизованих перевіряємо існування користувача
-      const isValid = await validateUser();
-      if (isValid) {
-        onContinue?.({
-          email,
-          password,
-          firstName,
-          lastName,
-          phone,
-        });
-      }
+    } catch (error) {
+      console.error('Error processing form:', error);
+      setValidationError('Помилка обробки форми');
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
-    <div id="permanent-customer" aria-labelledby="tab-2">
+    <div className="universal-client-form">
       {session?.user ? (
         <div className="mb-8">
           <p className="text-gray-700 mb-2">
-            Заповніть обов&apos;язкові поля для відправки замовлення.
+            Ви увійшли як{' '}
+            <span className="font-medium text-brand-600">
+              {session.user.name || session.user.email}
+            </span>
           </p>
-        </div>
-      ) : initialData ? (
-        <div className="mb-8">
-          <p className="text-green-600 font-medium mb-2">✅ Дані валідовані успішно</p>
-          <p className="text-gray-600 mb-2">
-            Ваші дані перевірені. Заповніть обов&apos;язкові поля нижче.
-          </p>
-          <p className="text-sm text-gray-600">
-            <span className="text-red-500">*</span> Ім&apos;я, прізвище та телефон -
-            обов&apos;язкові поля
+          <p className="text-gray-600 text-sm">
+            Заповніть або оновіть ваші особисті дані для оформлення замовлення.
           </p>
         </div>
       ) : (
         <div className="mb-8">
           <p className="text-gray-700 mb-2">
-            Якщо ви зареєстрований клієнт, заповніть всі поля нижче. Якщо ви ще не є нашим клієнтом,
-            то перейдіть у розділ &ldquo;Новий покупець&rdquo;.
-          </p>
-          <p className="text-sm text-gray-600">
-            <span className="text-red-500">*</span> Ім&apos;я, прізвище та телефон -
-            обов&apos;язкові поля
+            Заповніть ваші особисті дані для оформлення замовлення.
           </p>
         </div>
       )}
@@ -213,50 +204,50 @@ const PermanentClientForm = ({
         <div className="relative flex-1">
           <input
             type="text"
-            id="permanent-firstName"
+            id="firstName"
             placeholder=" "
             value={firstName}
             onChange={e => setFirstName(e.target.value)}
             className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <label
-            htmlFor="permanent-firstName"
+            htmlFor="firstName"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-        peer-focus:-top-6 peer-focus:text-[13px] ${
-          firstName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-        }`}
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                firstName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
           >
             Ім&apos;я <span className="text-red-500">*</span>
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-        transition-all duration-500 ease-in-out 
-        origin-left peer-focus:w-full z-10"
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
           ></span>
         </div>
 
         <div className="relative flex-1">
           <input
             type="text"
-            id="permanent-lastName"
+            id="lastName"
             placeholder=" "
             value={lastName}
             onChange={e => setLastName(e.target.value)}
             className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <label
-            htmlFor="permanent-lastName"
+            htmlFor="lastName"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-        peer-focus:-top-6 peer-focus:text-[13px] ${
-          lastName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-        }`}
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                lastName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
           >
             Прізвище <span className="text-red-500">*</span>
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-        transition-all duration-500 ease-in-out 
-        origin-left peer-focus:w-full z-10"
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
           ></span>
         </div>
       </div>
@@ -281,30 +272,30 @@ const PermanentClientForm = ({
               setIsPhoneFocused(false);
             }}
             inputMode="tel"
-            id="permanent-phone"
+            id="phone"
             placeholder=" "
             className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <label
-            htmlFor="permanent-phone"
+            htmlFor="phone"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-        peer-focus:-top-6 peer-focus:text-[13px] ${
-          phone ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-        }`}
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                phone ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
           >
             Телефон <span className="text-red-500">*</span>
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-        transition-all duration-500 ease-in-out 
-        origin-left peer-focus:w-full z-10"
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
           ></span>
         </div>
 
         <div className="relative flex-1">
           <input
-            type="text"
-            id="permanent-email"
+            type="email"
+            id="email"
             placeholder=" "
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -314,18 +305,18 @@ const PermanentClientForm = ({
             }`}
           />
           <label
-            htmlFor="permanent-email"
+            htmlFor="email"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-        peer-focus:-top-6 peer-focus:text-[13px] ${
-          email ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-        }`}
+              peer-focus:-top-6 peer-focus:text-[13px] ${
+                email ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+              }`}
           >
             E-mail
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-        transition-all duration-500 ease-in-out 
-        origin-left peer-focus:w-full z-10"
+              transition-all duration-500 ease-in-out 
+              origin-left peer-focus:w-full z-10"
           ></span>
         </div>
       </div>
@@ -339,14 +330,14 @@ const PermanentClientForm = ({
         <button
           type="button"
           onClick={handleContinue}
-          disabled={isValidating}
+          disabled={isLoading}
           className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isValidating ? 'Перевіряємо...' : session?.user ? 'Продовжити оформлення' : 'Далі'}
+          {isLoading ? 'Обробляємо...' : 'Далі до доставки'}
         </button>
       </div>
     </div>
   );
 };
 
-export default PermanentClientForm;
+export default UniversalClientForm;

@@ -9,17 +9,14 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import CartButton from './CartButton';
 import FavoritesButton from './FavoritesButton';
 import AuthModal from '../auth/AuthModal';
-import { usePermanentClientStore } from '../store/permanentClientStore';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { data: session } = useSession();
-  const { shouldShowPermanentClientName, clientInfo } = usePermanentClientStore();
 
   // Визначаємо яке ім'я показувати
-  const displayName =
-    session?.user?.name || (shouldShowPermanentClientName() ? clientInfo?.name : null);
+  const displayName = session?.user?.name;
 
   const handleUserIconClick = (e: React.MouseEvent) => {
     e.preventDefault();
