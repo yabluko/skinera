@@ -126,45 +126,61 @@ const UniversalClientForm = ({ onContinue }: UniversalClientFormProps) => {
 
   // Обробник кнопки продовжити
   const handleContinue = async () => {
+    console.log('🎯 handleContinue called');
+
     // Валідуємо обов'язкові поля
     if (!validateRequiredFields()) {
+      console.log('❌ Validation failed');
       return;
     }
 
+    console.log('✅ Validation passed');
     setIsLoading(true);
     setValidationError('');
 
     try {
-      // Для неавторизованих користувачів перевіряємо чи існує користувач з таким email
-      if (!session?.user) {
-        const response = await fetch('/api/auth/user-info', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        });
+      // Визначаємо email для збереження
+      const emailToSave = email || session?.user?.email || '';
 
-        if (response.ok) {
-          const userData = await response.json();
-          // Якщо користувач існує, підтягуємо його дані
-          if (userData.name) {
-            const { firstName: dbFirstName, lastName: dbLastName } = splitFullName(userData.name);
-            // Оновлюємо дані тільки якщо вони не заповнені або відрізняються
-            if (!firstName || !lastName) {
-              setFirstName(dbFirstName || firstName);
-              setLastName(dbLastName || lastName);
-            }
-          }
-          if (userData.phone && !phone) {
-            setPhone(userData.phone);
-          }
-        }
+      console.log('🚀 Saving user data:', {
+        email: emailToSave,
+        firstName,
+        lastName,
+        phone,
+      });
+
+      // Email не обов'язковий для оформлення замовлення
+
+      console.log('📡 Making API call to /api/auth/update-user');
+      // Зберігаємо/оновлюємо дані користувача в базі даних
+      const saveResponse = await fetch('/api/auth/update-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...(emailToSave && { email: emailToSave }), // додаємо email тільки якщо він є
+          firstName,
+          lastName,
+          phone,
+        }),
+      });
+
+      console.log('📨 API response received, status:', saveResponse.status);
+
+      if (!saveResponse.ok) {
+        const errorData = await saveResponse.json();
+        console.error('❌ Error saving data:', errorData);
+        setValidationError(errorData.error || 'Помилка збереження даних');
+        return;
       }
+
+      const savedData = await saveResponse.json();
+      console.log('✅ Дані користувача збережено:', savedData);
 
       // Передаємо дані далі
       onContinue?.({
-        email,
+        email: emailToSave || '', // можна передати порожній рядок якщо немає email
         firstName,
         lastName,
         phone,
