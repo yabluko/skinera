@@ -18,11 +18,7 @@ interface UniversalClientFormProps {
   onClearSavedData?: () => void;
 }
 
-const UniversalClientForm = ({
-  initialData,
-  onContinue,
-  onClearSavedData,
-}: UniversalClientFormProps) => {
+const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormProps) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -238,42 +234,38 @@ const UniversalClientForm = ({
         </div>
       ) : (
         <div className="mb-8">
-          <p className="text-gray-700 mb-2">
+          <p className="text-gray-700 mb-12">
             Заповніть ваші особисті дані для оформлення замовлення.
           </p>
         </div>
       )}
 
       {/* Перший ряд: Повне ім'я */}
-      <div className="mb-8">
-        <div className="relative">
+      <div className="mb-8 flex items-center gap-6">
+        <label htmlFor="fullName" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+          Ім&apos;я та прізвище <span className="text-red-500">*</span>
+        </label>
+        <div className="relative flex-1">
           <input
             type="text"
             id="fullName"
-            placeholder=" "
             value={fullName}
             onChange={e => setFullName(e.target.value)}
-            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            className="w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
-          <label
-            htmlFor="fullName"
-            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-              peer-focus:-top-6 peer-focus:text-[13px] ${
-                fullName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-              }`}
-          >
-            Ім&apos;я та прізвище <span className="text-red-500">*</span>
-          </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
-              origin-left peer-focus:w-full z-10"
+              origin-left focus-within:w-full"
           ></span>
         </div>
       </div>
 
-      {/* Другий ряд: Телефон та Email */}
-      <div className="flex gap-4 md:gap-20 mb-8 flex-col md:flex-row">
+      {/* Другий ряд: Телефон */}
+      <div className="mb-8 flex items-center gap-6">
+        <label htmlFor="phone" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+          Телефон <span className="text-red-500">*</span>
+        </label>
         <div className="relative flex-1">
           <IMaskInput
             mask="+{38} (000) 000 00 00"
@@ -293,50 +285,36 @@ const UniversalClientForm = ({
             }}
             inputMode="tel"
             id="phone"
-            placeholder=" "
-            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            className="w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
-          <label
-            htmlFor="phone"
-            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-              peer-focus:-top-6 peer-focus:text-[13px] ${
-                phone ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-              }`}
-          >
-            Телефон <span className="text-red-500">*</span>
-          </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
-              origin-left peer-focus:w-full z-10"
+              origin-left focus-within:w-full z-10"
           ></span>
         </div>
+      </div>
 
+      {/* Третій ряд: Email */}
+      <div className="mb-8 flex items-center gap-6">
+        <label htmlFor="email" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+          E-mail
+        </label>
         <div className="relative flex-1">
           <input
             type="email"
             id="email"
-            placeholder=" "
             value={email}
             onChange={e => setEmail(e.target.value)}
             readOnly={!!session?.user}
-            className={`peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none ${
+            className={`w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none ${
               session?.user ? 'bg-gray-50 cursor-not-allowed' : ''
             }`}
           />
-          <label
-            htmlFor="email"
-            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-              peer-focus:-top-6 peer-focus:text-[13px] ${
-                email ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-              }`}
-          >
-            E-mail
-          </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
-              origin-left peer-focus:w-full z-10"
+              origin-left focus-within:w-full z-10"
           ></span>
         </div>
       </div>
