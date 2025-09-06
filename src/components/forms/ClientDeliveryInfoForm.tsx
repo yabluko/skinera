@@ -51,21 +51,23 @@ const ClientDeliveryInfoForm = ({
       {userData && (
         <div className="mb-8 p-4 bg-gray-50 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Інформація про замовника</h3>
-          <div className="grid grid-cols-1 ">
-            <div>
-              <p className="text-sm text-gray-600">Email:</p>
-              <p className="font-medium text-gray-900">{userData.email}</p>
-            </div>
+          <div className="grid grid-cols-1 gap-2">
+            {userData.email && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Email:</span>
+                <span className="font-medium text-gray-900">{userData.email}</span>
+              </div>
+            )}
             {userData.name && (
-              <div>
-                <p className="text-sm text-gray-600">Імʼя:</p>
-                <p className="font-medium text-gray-900">{userData.name}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Імʼя:</span>
+                <span className="font-medium text-gray-900">{userData.name}</span>
               </div>
             )}
             {userData.phone && (
-              <div>
-                <p className="text-sm text-gray-600">Телефон:</p>
-                <p className="font-medium text-gray-900">{userData.phone}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Телефон:</span>
+                <span className="font-medium text-gray-900">{userData.phone}</span>
               </div>
             )}
           </div>
