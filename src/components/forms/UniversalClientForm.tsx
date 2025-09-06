@@ -25,8 +25,7 @@ const UniversalClientForm = ({
 }: UniversalClientFormProps) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
   const [validationError, setValidationError] = useState('');
@@ -38,6 +37,11 @@ const UniversalClientForm = ({
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
     return { firstName, lastName };
+  };
+
+  // Функція для об'єднання ім'я та прізвища в повне ім'я
+  const combineNames = (firstName: string, lastName: string) => {
+    return `${firstName} ${lastName}`.trim();
   };
 
   // Функція для отримання інформації про користувача з API
@@ -73,8 +77,7 @@ const UniversalClientForm = ({
       if (initialData) {
         console.log('✅ Завантажуємо initialData:', initialData);
         setEmail(initialData.email || '');
-        setFirstName(initialData.firstName || '');
-        setLastName(initialData.lastName || '');
+        setFullName(combineNames(initialData.firstName || '', initialData.lastName || ''));
         setPhone(initialData.phone || '');
         return; // Якщо є initialData, не завантажуємо з session/API
       }
@@ -85,18 +88,14 @@ const UniversalClientForm = ({
 
         // Спочатку заповнюємо з session
         if (session.user.name) {
-          const { firstName, lastName } = splitFullName(session.user.name);
-          setFirstName(firstName);
-          setLastName(lastName);
+          setFullName(session.user.name);
         }
 
         // Потім підтягуємо додаткові дані з API
         const userData = await fetchUserInfo(session.user.email);
         if (userData) {
           if (userData.name) {
-            const { firstName, lastName } = splitFullName(userData.name);
-            setFirstName(firstName);
-            setLastName(lastName);
+            setFullName(userData.name);
           }
           setPhone(userData.phone || '');
         }
@@ -110,12 +109,17 @@ const UniversalClientForm = ({
   const validateRequiredFields = () => {
     const errors = [];
 
-    if (!firstName.trim()) {
-      errors.push("Ім'я обов'язкове для заповнення");
-    }
-
-    if (!lastName.trim()) {
-      errors.push("Прізвище обов'язкове для заповнення");
+    if (!fullName.trim()) {
+      errors.push("Ім'я та прізвище обов'язкові для заповнення");
+    } else {
+      // Перевіряємо чи є принаймні два слова (ім'я та прізвище)
+      const nameParts = fullName
+        .trim()
+        .split(' ')
+        .filter(part => part.length > 0);
+      if (nameParts.length < 2) {
+        errors.push("Введіть і ім'я, і прізвище");
+      }
     }
 
     if (!phone.trim()) {
@@ -163,6 +167,9 @@ const UniversalClientForm = ({
     try {
       // Визначаємо email для збереження
       const emailToSave = email || session?.user?.email || '';
+
+      // Розділяємо повне ім'я на ім'я та прізвище
+      const { firstName, lastName } = splitFullName(fullName);
 
       console.log('🚀 Saving user data:', {
         email: emailToSave,
@@ -258,8 +265,7 @@ const UniversalClientForm = ({
                   onClearSavedData();
                   // Очищаємо поля форми
                   setEmail(session?.user?.email || '');
-                  setFirstName('');
-                  setLastName('');
+                  setFullName('');
                   setPhone('');
                 }}
                 className="text-green-600 hover:text-green-800 text-sm underline"
@@ -271,50 +277,25 @@ const UniversalClientForm = ({
         </div>
       )}
 
-      {/* Перший ряд: Ім'я та Прізвище */}
-      <div className="flex gap-4 md:gap-20 mb-8 flex-col md:flex-row">
-        <div className="relative flex-1">
+      {/* Перший ряд: Повне ім'я */}
+      <div className="mb-8">
+        <div className="relative">
           <input
             type="text"
-            id="firstName"
+            id="fullName"
             placeholder=" "
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            value={fullName}
+            onChange={e => setFullName(e.target.value)}
             className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <label
-            htmlFor="firstName"
+            htmlFor="fullName"
             className={`absolute text-gray-400 pointer-events-none transition-all duration-200
               peer-focus:-top-6 peer-focus:text-[13px] ${
-                firstName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
+                fullName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
               }`}
           >
-            Ім&apos;я <span className="text-red-500">*</span>
-          </label>
-          <span
-            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
-              transition-all duration-500 ease-in-out 
-              origin-left peer-focus:w-full z-10"
-          ></span>
-        </div>
-
-        <div className="relative flex-1">
-          <input
-            type="text"
-            id="lastName"
-            placeholder=" "
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-            className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
-          />
-          <label
-            htmlFor="lastName"
-            className={`absolute text-gray-400 pointer-events-none transition-all duration-200
-              peer-focus:-top-6 peer-focus:text-[13px] ${
-                lastName ? '-top-6 left-0 text-[13px]' : ' top-0 left-0 text-sm'
-              }`}
-          >
-            Прізвище <span className="text-red-500">*</span>
+            Ім&apos;я та прізвище <span className="text-red-500">*</span>
           </label>
           <span
             className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
