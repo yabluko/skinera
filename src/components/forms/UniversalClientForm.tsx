@@ -241,7 +241,7 @@ const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormPro
       )}
 
       {/* Перший ряд: Повне ім'я */}
-      <div className="mb-8 flex flex-col md:flex-row justify-start gap-4">
+      <div className="mb-8 flex flex-col md:flex-row justify-start gap-2">
         <label htmlFor="fullName" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
           Ім&apos;я та прізвище <span className="text-red-500">*</span>
         </label>
@@ -262,7 +262,7 @@ const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormPro
       </div>
 
       {/* Другий ряд: Телефон */}
-      <div className="mb-8 flex flex-col md:flex-row justify-start  gap-4">
+      <div className="mb-8 flex flex-col md:flex-row justify-start  gap-2">
         <label htmlFor="phone" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
           Телефон <span className="text-red-500">*</span>
         </label>
@@ -296,7 +296,7 @@ const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormPro
       </div>
 
       {/* Третій ряд: Email */}
-      <div className="mb-8 flex flex-col md:flex-row justify-start   gap-4">
+      <div className="mb-8 flex flex-col md:flex-row justify-start   gap-2">
         <label htmlFor="email" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
           E-mail
         </label>
