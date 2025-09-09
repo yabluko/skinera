@@ -9,7 +9,7 @@ const CHECKOUT_DATA_KEY = 'skinera_checkout_personal_data';
 
 const Checkout = () => {
   const { data: session } = useSession();
-  const [currentStep, setCurrentStep] = useState<'client-info' | 'delivery-info'>('client-info');
+  const [showDeliveryForm, setShowDeliveryForm] = useState(false);
 
   // Зберігаємо особисті дані введені користувачем
   const [personalData, setPersonalData] = useState<{
@@ -26,6 +26,7 @@ const Checkout = () => {
       if (savedData) {
         const parsedData = JSON.parse(savedData);
         setPersonalData(parsedData);
+        setShowDeliveryForm(true); // Якщо є збережені дані, показуємо форму доставки
         console.log('✅ Завантажено збережені дані з localStorage:', parsedData);
       }
     } catch (error) {
@@ -72,66 +73,71 @@ const Checkout = () => {
             {/* Кроки оформлення */}
             <div className="flex flex-col sm:flex-row mb-8 md:mb-12 gap-2 sm:gap-0">
               <h3
-                className={`font-semibold text-lg md:text-xl sm:mr-11 cursor-pointer transition-colors duration-200 ${
-                  currentStep === 'client-info' ? 'text-brand-600' : 'text-[#a6a2a2]'
+                className={`font-semibold text-lg md:text-xl sm:mr-11 transition-colors duration-200 ${
+                  showDeliveryForm ? 'text-[#a6a2a2]' : 'text-brand-600'
                 }`}
-                onClick={() => setCurrentStep('client-info')}
               >
                 1 Особисті дані
               </h3>
               <h3
-                className={`font-semibold text-lg md:text-xl cursor-pointer transition-colors duration-200 ${
-                  currentStep === 'delivery-info' ? 'text-brand-600' : 'text-[#a6a2a2]'
+                className={`font-semibold text-lg md:text-xl transition-colors duration-200 ${
+                  showDeliveryForm ? 'text-brand-600' : 'text-[#a6a2a2]'
                 }`}
-                onClick={() => setCurrentStep('delivery-info')}
               >
                 2 Інформація про доставку
               </h3>
             </div>
 
-            {currentStep === 'client-info' ? (
-              <UniversalClientForm
-                initialData={personalData}
-                onContinue={data => {
-                  // Зберігаємо особисті дані в state та localStorage
-                  const personalDataToSave = {
-                    email: data.email,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    phone: data.phone,
-                  };
-                  setPersonalData(personalDataToSave);
-                  savePersonalDataToStorage(personalDataToSave);
-                  setCurrentStep('delivery-info');
-                }}
-                onClearSavedData={clearPersonalDataFromStorage}
-              />
-            ) : (
-              <ClientDeliveryInfoForm
-                onBack={() => setCurrentStep('client-info')}
-                onOrderComplete={() => {
-                  // Очищаємо збережені дані після успішного замовлення
-                  clearPersonalDataFromStorage();
-                  setPersonalData(null);
+            {/* Форма особистих даних */}
+            <UniversalClientForm
+              initialData={personalData}
+              onContinue={data => {
+                // Зберігаємо особисті дані в state та localStorage
+                const personalDataToSave = {
+                  email: data.email,
+                  firstName: data.firstName,
+                  lastName: data.lastName,
+                  phone: data.phone,
+                };
+                setPersonalData(personalDataToSave);
+                savePersonalDataToStorage(personalDataToSave);
+                setShowDeliveryForm(true);
+              }}
+              onClearSavedData={clearPersonalDataFromStorage}
+              isCompleted={showDeliveryForm}
+              onEdit={() => setShowDeliveryForm(false)}
+            />
 
-                  // Можна додати логіку перенаправлення або показу сторінки успіху
-                  console.log('🎉 Замовлення завершено, дані очищено');
-                }}
-                userData={
-                  personalData
-                    ? {
-                        email: personalData.email,
-                        name: `${personalData.firstName} ${personalData.lastName}`.trim(),
-                        phone: personalData.phone,
-                      }
-                    : session?.user
-                    ? {
-                        email: session.user.email || '',
-                        name: session.user.name || undefined,
-                      }
-                    : undefined
-                }
-              />
+            {/* Форма доставки - показується після заповнення особистих даних */}
+            {showDeliveryForm && (
+              <div className="mt-8 md:mt-12 animate-in slide-in-from-top-4 duration-500">
+                <ClientDeliveryInfoForm
+                  onBack={() => setShowDeliveryForm(false)}
+                  onOrderComplete={() => {
+                    // Очищаємо збережені дані після успішного замовлення
+                    clearPersonalDataFromStorage();
+                    setPersonalData(null);
+                    setShowDeliveryForm(false);
+
+                    // Можна додати логіку перенаправлення або показу сторінки успіху
+                    console.log('🎉 Замовлення завершено, дані очищено');
+                  }}
+                  userData={
+                    personalData
+                      ? {
+                          email: personalData.email,
+                          name: `${personalData.firstName} ${personalData.lastName}`.trim(),
+                          phone: personalData.phone,
+                        }
+                      : session?.user
+                      ? {
+                          email: session.user.email || '',
+                          name: session.user.name || undefined,
+                        }
+                      : undefined
+                  }
+                />
+              </div>
             )}
           </div>
         </div>

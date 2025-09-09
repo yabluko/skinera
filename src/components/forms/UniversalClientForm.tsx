@@ -16,9 +16,16 @@ interface UniversalClientFormProps {
     phone: string;
   }) => void;
   onClearSavedData?: () => void;
+  isCompleted?: boolean;
+  onEdit?: () => void;
 }
 
-const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormProps) => {
+const UniversalClientForm = ({
+  initialData,
+  onContinue,
+  isCompleted,
+  onEdit,
+}: UniversalClientFormProps) => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -217,6 +224,37 @@ const UniversalClientForm = ({ initialData, onContinue }: UniversalClientFormPro
       setIsLoading(false);
     }
   };
+
+  // Якщо форма завершена, показуємо компактний варіант
+  if (isCompleted && initialData) {
+    return (
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-semibold text-lg mb-2">Особисті дані</h3>
+            <div className="text-sm text-gray-600 space-y-1">
+              <p className="flex gap-4">
+                <span className="font-medium"></span>{' '}
+                {combineNames(initialData.firstName, initialData.lastName)}
+                <span className="font-medium"></span> {initialData.phone}
+              </p>
+              <p>
+                {initialData.email && <span className="font-medium">Email:</span>}
+                {initialData.email}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onEdit}
+            className="text-brand-600 hover:text-brand-700 text-sm underline"
+          >
+            Редагувати
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="universal-client-form">
