@@ -12,12 +12,35 @@ export const favCities: string[] = [
   'Рівне',
 ];
 
-export const delivery_options = [
-  { id: 'newpost-pickup', label: 'Нова Пошта (Відділення)', value: 'newpost-pickup' },
-  { id: 'newpost-postmachine', label: 'Нова Пошта (Поштомат)', value: 'newpost-postmachine' },
-];
-
 export const payment_options = [
-  { id: 'bank-card', label: 'Оплата банківською картою', value: 'bank-card' },
-  { id: 'cash-on-delivery', label: 'Післяплата', value: 'cash-on-delivery' },
+  {
+    id: 'cash-on-delivery',
+    label: 'Готівкою при отриманні',
+    value: 'cash-on-delivery',
+    description: 'Оплата замовлення готівкою при отриманні',
+  },
+  {
+    id: 'bank-card',
+    label: 'Visa/MasterCard',
+    value: 'bank-card',
+    description: 'Оплата банківською картою онлайн',
+  },
+  {
+    id: 'bank-transfer',
+    label: 'Банківський розрахунок',
+    value: 'bank-transfer',
+    description: 'Оплата через банківський переказ',
+  },
+  {
+    id: 'credit',
+    label: 'Кредит',
+    value: 'credit',
+    description: 'Оформлення кредиту на покупку',
+  },
+  {
+    id: 'installment',
+    label: 'Оплата частинами',
+    value: 'installment',
+    description: 'Розстрочка платежу',
+  },
 ];

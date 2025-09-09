@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import DropDown from '../common/DropDown';
-import { delivery_options, payment_options } from '@/mockData/nova-postha-mock';
+import { payment_options } from '@/mockData/nova-postha-mock';
 import DeliveryCityDropwDown from '../common/DeliveryCityDropwDown';
 import DeliveryDepartmentDropDown from '../common/DeliveryDepartmentDropwDown';
 import { Addresses } from '@/interfaces/NovaPoshtaResponse';
@@ -23,8 +22,9 @@ const ClientDeliveryInfoForm = ({
   const [currentCity, setCurrentCity] = useState<Addresses | null>(null);
   const [cityName, setCityName] = useState<string>('');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
-  const [deliveryName,] = useState<string>(userData?.name || '');
-  const [deliveryPhone, ] = useState<string>(userData?.phone || '');
+  const [deliveryName] = useState<string>(userData?.name || '');
+  const [deliveryPhone] = useState<string>(userData?.phone || '');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash-on-delivery');
 
   // Скидаємо відділення при зміні міста
   const handleCityChange = useCallback((city: Addresses | null, name: string) => {
@@ -48,31 +48,59 @@ const ClientDeliveryInfoForm = ({
       {/* Форма доставки */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Доставка</h3>
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-          <div className="flex flex-col gap-4 md:gap-6 flex-1">
-            <DeliveryCityDropwDown
+        <div className="flex flex-col gap-4 md:gap-6">
+          <DeliveryCityDropwDown
+            city={currentCity}
+            cityName={cityName}
+            onCityChange={handleCityChange}
+          />
+
+          {isSelectedCity && (
+            <DeliveryDepartmentDropDown
               city={currentCity}
-              cityName={cityName}
-              onCityChange={handleCityChange}
+              selectedDepartment={selectedDepartment}
+              onDepartmentChange={setSelectedDepartment}
             />
-
-            {isSelectedCity && (
-              <>
-                <DropDown labelName="Варіант доставки" arrOptions={delivery_options} />
-                <DeliveryDepartmentDropDown
-                  city={currentCity}
-                  selectedDepartment={selectedDepartment}
-                  onDepartmentChange={setSelectedDepartment}
-                />
-              </>
-            )}
-          </div>
-
-          <div className="flex flex-col flex-1">
-            {isSelectedCity && <DropDown labelName="Варіант оплати" arrOptions={payment_options} />}
-          </div>
+          )}
         </div>
       </div>
+
+      {/* Варіанти оплати - окремий блок після доставки */}
+      {isSelectedCity && (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Варіанти оплати</h3>
+
+          {/* Таби з варіантами оплати */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {payment_options.map(option => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => setSelectedPaymentMethod(option.value)}
+                className={`px-4 py-2 text-sm rounded-md border transition-colors ${
+                  selectedPaymentMethod === option.value
+                    ? 'bg-brand-600 text-white border-brand-600'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Опис обраного варіанту оплати */}
+          {selectedPaymentMethod && (
+            <div className="bg-gray-50 p-4 rounded-md mb-4">
+              <p className="text-sm text-gray-600">
+                {
+                  payment_options.find(option => option.value === selectedPaymentMethod)
+                    ?.description
+                }
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="mt-8 flex gap-4">
         {onBack && (
