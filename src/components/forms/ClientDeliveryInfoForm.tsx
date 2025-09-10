@@ -34,6 +34,7 @@ const ClientDeliveryInfoForm = ({
   }, []);
 
   const isSelectedCity = currentCity && cityName;
+  const isSelectedDepartment = selectedDepartment.trim() !== '';
 
   // Валідація телефону
   const isValidPhone = () => {
@@ -66,7 +67,7 @@ const ClientDeliveryInfoForm = ({
       </div>
 
       {/* Варіанти оплати - окремий блок після доставки */}
-      {isSelectedCity && (
+      {isSelectedCity && isSelectedDepartment && (
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Варіанти оплати</h3>
 
@@ -114,7 +115,9 @@ const ClientDeliveryInfoForm = ({
         )}
         <button
           type="button"
-          disabled={!deliveryName.trim() || !isValidPhone() || !isSelectedCity}
+          disabled={
+            !deliveryName.trim() || !isValidPhone() || !isSelectedCity || !isSelectedDepartment
+          }
           onClick={() => {
             // Тут можна додати логіку відправки замовлення на сервер
             console.log('🎉 Замовлення завершено!');
