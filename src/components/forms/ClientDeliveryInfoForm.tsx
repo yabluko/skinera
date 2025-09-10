@@ -72,27 +72,38 @@ const ClientDeliveryInfoForm = ({
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Варіанти оплати</h3>
 
           {/* Таби з варіантами оплати */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {payment_options.map(option => (
+          <div className="flex flex-wrap gap-0 mb-6">
+            {payment_options.map((option, index) => (
               <button
                 key={option.id}
                 type="button"
                 onClick={() => setSelectedPaymentMethod(option.value)}
-                className={`px-4 py-2 text-sm rounded-md border transition-colors ${
+                className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   selectedPaymentMethod === option.value
-                    ? 'bg-brand-600 text-white border-brand-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
-                }`}
+                    ? 'text-brand-600 border-brand-600'
+                    : 'text-gray-500 border-gray-300 border-dashed hover:text-gray-700'
+                } ${index === 0 ? 'pr-4' : index === payment_options.length - 1 ? 'pl-4' : 'px-4'}`}
               >
                 {option.label}
               </button>
             ))}
           </div>
 
-          {/* Опис обраного варіанту оплати */}
+          {/* Деталі обраного варіанту оплати */}
           {selectedPaymentMethod && (
-            <div className="bg-gray-50 p-4 rounded-md mb-4">
-              <p className="text-sm text-gray-600">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-4 h-4 border-2 border-brand-600 rounded-full flex items-center justify-center">
+                  <div className="w-2 h-2 bg-brand-600 rounded-full"></div>
+                </div>
+                <span className="text-sm font-medium text-gray-900">
+                  {
+                    payment_options.find(option => option.value === selectedPaymentMethod)
+                      ?.shortLabel
+                  }
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 ml-7">
                 {
                   payment_options.find(option => option.value === selectedPaymentMethod)
                     ?.description
