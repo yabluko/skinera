@@ -65,7 +65,7 @@ export default function FaceCarePage() {
         type="services"
         pageTitle="Догляд за обличчям - Skinera"
         pageDescription="Професійний догляд за обличчями"
-        pageUrl="https://skinera.com.ua/services/face-care"
+        pageUrl="https://skinera-web.vercel.app/services/face-care"
       />
       <div>
         <HeroSection data={heroSectionData} />

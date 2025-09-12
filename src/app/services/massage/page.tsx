@@ -46,7 +46,7 @@ export default function MassagePage() {
         type="services"
         pageTitle="Масаж - Skinera"
         pageDescription="Масаж - це не просто фізичний вплив, це відчуття здоров'я та гармонії"
-        pageUrl="https://skinera.com.ua/services/massage"
+        pageUrl="https://skinera-web.vercel.app/services/massage"
       />
       <div>
         <HeroSection data={heroSectionData} />

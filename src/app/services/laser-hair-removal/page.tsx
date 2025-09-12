@@ -59,7 +59,7 @@ export default function LaserHairRemovalPage() {
         type="services"
         pageTitle="Лазерна епіляція - Skinera"
         pageDescription="Безболісне та ефективне видалення небажаного волосся"
-        pageUrl="https://skinera.com.ua/services/laser-hair-removal"
+        pageUrl="https://skinera-web.vercel.app/services/laser-hair-removal"
       />
       <div>
         <HeroSection data={heroSectionData} />

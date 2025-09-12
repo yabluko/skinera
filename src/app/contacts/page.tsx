@@ -36,7 +36,7 @@ export default function ContactsPage() {
         type="contact"
         pageTitle="Контакти - Skinera"
         pageDescription="Наша адреса, телефон та графік роботи"
-        pageUrl="https://skinera.com.ua/contacts"
+        pageUrl="https://skinera-web.vercel.app/contacts"
       />
       <main className="bg-gradient-to-b from-purple-50 via-white to-white pt-20">
         <ContactsSection />

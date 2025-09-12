@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://skinera.com.ua'; // Update with your actual domain
+  const baseUrl = 'https://skinera-web.vercel.app/';
 
   return [
     {

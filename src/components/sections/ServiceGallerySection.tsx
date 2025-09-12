@@ -117,9 +117,8 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
       const easingFunction = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // easeOutQuart
 
       sliderTrackRef.current.style.transition = `transform ${transitionDuration} ${easingFunction}`;
-      sliderTrackRef.current.style.transform = `translateX(-${
-        currentIndex * (slideWidthPx + slideGap)
-      }px)`;
+      sliderTrackRef.current.style.transform = `translateX(-${currentIndex * (slideWidthPx + slideGap)
+        }px)`;
     }
   }, [transitionEnabled, currentIndex, slideWidthPx, slideGap]);
 
@@ -167,6 +166,9 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
         className="absolute inset-0 top-[220px] transition-all duration-1000 ease-out"
         style={{
           backgroundColor,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cg fill='%23D4A574' fill-opacity='0.15'%3E%3Ccircle cx='5' cy='5' r='1.5'/%3E%3Ccircle cx='15' cy='15' r='1.5'/%3E%3Ccircle cx='25' cy='25' r='1.5'/%3E%3Ccircle cx='5' cy='25' r='1'/%3E%3Ccircle cx='25' cy='5' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '40px 40px',
           ...(borderRadius && {
             borderTopLeftRadius: borderRadius.topLeft,
             borderTopRightRadius: borderRadius.topRight,
@@ -184,9 +186,8 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
           <div className="overflow-x-clip">
             {/* Slider track */}
             <div
-              className={`flex relative ${
-                transitionEnabled ? 'transition-transform duration-600 ease-out' : 'transition-none'
-              }`}
+              className={`flex relative ${transitionEnabled ? 'transition-transform duration-600 ease-out' : 'transition-none'
+                }`}
               style={{ gap: `${slideGap}px` }}
               ref={sliderTrackRef}
               onTransitionEnd={handleTransitionEnd}
@@ -198,9 +199,8 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
                 return (
                   <div
                     key={index}
-                    className={`overflow-hidden rounded-xl bg-white flex-shrink-0 ${
-                      isJumping ? 'transition-none' : 'transition-all duration-500 ease-out'
-                    } ${isMiddle && visibleCounts === 3 ? 'z-20 shadow-2xl' : 'shadow-md'}`}
+                    className={`overflow-hidden rounded-xl bg-white flex-shrink-0 ${isJumping ? 'transition-none' : 'transition-all duration-500 ease-out'
+                      } ${isMiddle && visibleCounts === 3 ? 'z-20 shadow-2xl' : 'shadow-md'}`}
                     style={{
                       transform:
                         isMiddle && visibleCounts === 3

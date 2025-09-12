@@ -13,7 +13,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
   pageDescription,
   pageUrl,
 }) => {
-  const baseUrl = 'https://skinera.com.ua'; // Update with your actual domain
+  const baseUrl = 'https://skinera-web.vercel.app/'; // Update with your actual domain
   const businessName = 'Skinera';
   const businessDescription =
     'Професійний салон краси у Львові. Догляд за обличчям, лазерна епіляція, масаж. Індивідуальний підхід до кожного клієнта.';
