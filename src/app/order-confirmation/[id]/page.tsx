@@ -89,7 +89,6 @@ const OrderConfirmationPage = () => {
             <div>
               <h3 className="font-medium text-gray-900">Клієнт</h3>
               <p className="text-gray-600">{order.userName}</p>
-              {order.userEmail && <p className="text-gray-600">{order.userEmail}</p>}
               <p className="text-gray-600">{order.userPhone}</p>
             </div>
 
@@ -104,12 +103,12 @@ const OrderConfirmationPage = () => {
               <p className="text-gray-600">{order.payment.methodLabel}</p>
             </div>
 
-            <div>
+            {/* <div>
               <h3 className="font-medium text-gray-900">Статус</h3>
               <span className="inline-block bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full">
                 {order.status === 'pending' ? 'В обробці' : order.status}
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -131,7 +130,7 @@ const OrderConfirmationPage = () => {
                       src={item.image_url}
                       alt={item.name.ua}
                       fill
-                      className="object-cover rounded-lg"
+                      className="object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -165,17 +164,17 @@ const OrderConfirmationPage = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/"
+            href="/products"
             className="inline-block bg-brand-600 text-white px-6 py-3 rounded-lg hover:bg-brand-700 transition-colors"
           >
             Продовжити покупки
           </Link>
-          <Link
+          {/* <Link
             href="/account"
             className="inline-block border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Мій акаунт
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
