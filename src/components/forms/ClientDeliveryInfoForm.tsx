@@ -3,6 +3,9 @@ import { payment_options } from '@/mockData/nova-postha-mock';
 import DeliveryCityDropwDown from '../common/DeliveryCityDropwDown';
 import DeliveryDepartmentDropDown from '../common/DeliveryDepartmentDropwDown';
 import { Addresses } from '@/interfaces/NovaPoshtaResponse';
+import { useCartStore } from '../store/cartStore';
+import { useRouter } from 'next/navigation';
+import { CreateOrderRequest } from '@/interfaces/Order';
 
 interface ClientDeliveryInfoFormProps {
   onBack?: () => void;
@@ -19,12 +22,18 @@ const ClientDeliveryInfoForm = ({
   onOrderComplete,
   userData,
 }: ClientDeliveryInfoFormProps = {}) => {
+  const router = useRouter();
+  const cart = useCartStore(state => state.cart);
+  const clearCart = useCartStore(state => state.clearCart);
+  const getTotal = useCartStore(state => state.getTotal);
+
   const [currentCity, setCurrentCity] = useState<Addresses | null>(null);
   const [cityName, setCityName] = useState<string>('');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [deliveryName] = useState<string>(userData?.name || '');
   const [deliveryPhone] = useState<string>(userData?.phone || '');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash-on-delivery');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Скидаємо відділення при зміні міста
   const handleCityChange = useCallback((city: Addresses | null, name: string) => {
@@ -42,6 +51,84 @@ const ClientDeliveryInfoForm = ({
     const digits = deliveryPhone.replace(/\D/g, '');
     const rest = digits.startsWith('38') ? digits.slice(2) : digits;
     return rest.length === 10;
+  };
+
+  // Функція для створення замовлення
+  const createOrder = async () => {
+    if (!currentCity || !selectedDepartment) {
+      throw new Error("Відсутні обов'язкові дані для замовлення");
+    }
+
+    const selectedPaymentOption = payment_options.find(
+      option => option.value === selectedPaymentMethod
+    );
+
+    // Використовуємо email з userData або fallback
+    const userEmail = userData?.email || `user-${Date.now()}@skinera.com`;
+
+    const orderData: CreateOrderRequest = {
+      userEmail: userEmail,
+      userName: deliveryName,
+      userPhone: deliveryPhone,
+      items: cart,
+      total: getTotal(),
+      delivery: {
+        city: cityName,
+        cityRef: currentCity.Ref,
+        department: selectedDepartment,
+        departmentRef: selectedDepartment, // Можна додати departmentRef якщо потрібно
+      },
+      payment: {
+        method: selectedPaymentMethod,
+        methodLabel: selectedPaymentOption?.label || selectedPaymentMethod,
+      },
+    };
+
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Помилка створення замовлення');
+    }
+
+    const result = await response.json();
+    return result.orderId;
+  };
+
+  // Обробка завершення замовлення
+  const handleOrderComplete = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const orderId = await createOrder();
+      console.log('🎉 Замовлення створено з ID:', orderId);
+
+      // Очищаємо кошик
+      clearCart();
+
+      // Викликаємо callback для очищення localStorage
+      onOrderComplete?.();
+
+      // Перенаправляємо на сторінку підтвердження
+      router.push(`/order-confirmation/${orderId}`);
+    } catch (error) {
+      console.error('❌ Помилка створення замовлення:', error);
+      alert(
+        `Помилка створення замовлення: ${
+          error instanceof Error ? error.message : 'Невідома помилка'
+        }`
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -127,21 +214,17 @@ const ClientDeliveryInfoForm = ({
         <button
           type="button"
           disabled={
-            !deliveryName.trim() || !isValidPhone() || !isSelectedCity || !isSelectedDepartment
+            !deliveryName.trim() ||
+            !isValidPhone() ||
+            !isSelectedCity ||
+            !isSelectedDepartment ||
+            isSubmitting ||
+            cart.length === 0
           }
-          onClick={() => {
-            // Тут можна додати логіку відправки замовлення на сервер
-            console.log('🎉 Замовлення завершено!');
-
-            // Викликаємо callback для очищення localStorage
-            onOrderComplete?.();
-
-            // Можна також показати повідомлення про успіх або перенаправити користувача
-            alert('Замовлення успішно оформлено!');
-          }}
+          onClick={handleOrderComplete}
           className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Завершити замовлення
+          {isSubmitting ? 'Збереження...' : 'Завершити замовлення'}
         </button>
       </div>
     </div>
