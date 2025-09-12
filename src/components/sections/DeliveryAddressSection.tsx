@@ -12,6 +12,7 @@ interface DeliveryAddressSectionProps {
   isLoading: boolean;
   onCitySelect: (city: Addresses) => void;
   onClear?: () => void;
+  hasUserSearched?: boolean; // Додаємо пропс для відстеження пошуку користувача
 }
 
 const DeliveryAddressSection = ({
@@ -23,6 +24,7 @@ const DeliveryAddressSection = ({
   isLoading,
   onCitySelect,
   onClear,
+  hasUserSearched = false,
 }: DeliveryAddressSectionProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -111,14 +113,29 @@ const DeliveryAddressSection = ({
           ))}
 
         {!isLoading && cities.length === 0 && cityName && !error && (
-          <li className="p-4 text-sm text-gray-500 text-center">
-            Місто не знайдено
-          </li>
+          <li className="p-4 text-sm text-gray-500 text-center">Місто не знайдено</li>
         )}
 
-        {error && (
+        {error && hasUserSearched && (
           <li className="p-4 text-sm text-red-500 text-center">
-            Помилка пошуку. Спробуйте ще раз.
+            <div className="flex flex-col items-center gap-2">
+              <span>Тимчасові проблеми з пошуком міст</span>
+              <span className="text-xs text-gray-500">Перевірте інтернет-з&apos;єднання</span>
+              <button
+                onClick={() => {
+                  setCityError(false);
+                  if (cityName.trim()) {
+                    // Trigger search again by clearing and setting city name
+                    const currentValue = cityName;
+                    setCityName('');
+                    setTimeout(() => setCityName(currentValue), 100);
+                  }
+                }}
+                className="text-xs text-blue-600 hover:text-blue-800 underline cursor-pointer"
+              >
+                Спробувати знову
+              </button>
+            </div>
           </li>
         )}
       </ul>

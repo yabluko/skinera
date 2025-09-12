@@ -69,8 +69,10 @@ export default function AuthModal({
       case 'password':
         if (!value) {
           error = 'Пароль обовʼязковий';
-        } else if (value.length < 6) {
-          error = 'Пароль має містити мінімум 6 символів';
+        } else if (value.length < 8) {
+          error = 'Пароль має містити мінімум 8 символів';
+        } else if (value.length > 20) {
+          error = 'Пароль має бути не більше 20 символів';
         }
         break;
 
@@ -242,11 +244,20 @@ export default function AuthModal({
         }
       } else {
         const error = await response.json();
+        console.error('Registration API error:', error);
+
         // Show specific error message from API
-        toast.error(error.error || error.message || 'Помилка реєстрації');
+        if (error.details && Array.isArray(error.details)) {
+          // Handle validation errors
+          const firstError = error.details[0];
+          toast.error(firstError.message || 'Помилка валідації');
+        } else {
+          toast.error(error.error || error.message || 'Помилка реєстрації');
+        }
       }
-    } catch {
-      toast.error('Помилка реєстрації');
+    } catch (error) {
+      console.error('Registration fetch error:', error);
+      toast.error('Помилка підключення до сервера');
     } finally {
       setIsLoading(false);
     }

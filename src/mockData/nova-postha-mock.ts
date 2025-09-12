@@ -7,15 +7,31 @@ export const favCities: string[] = [
   'Львів',
   'Кривий Ріг',
   'Миколаїв',
-];
-
-export const delivery_options = [
-  { id: 'newpost-pickup', label: 'Нова Пошта (Самовивіз)', value: 'newpost-pickup' },
-  { id: 'newpost-postmachine', label: 'Нова Пошта (Поштомат)', value: 'newpost-postmachine' },
+  'Івано-Франківськ',
+  'Вінниця',
+  'Рівне',
 ];
 
 export const payment_options = [
-  { id: 'google-pay', label: 'Google pay', value: 'google-pay' },
-  { id: 'bank-card', label: 'Оплата банківською картою', value: 'bank-card' },
-  { id: 'cash', label: 'Готівка', value: 'cash' },
+  {
+    id: 'cash-on-delivery',
+    label: 'Готівкою при отриманні',
+    value: 'cash-on-delivery',
+    description: 'Обраний варіант оплати замовлення "Готівкою при отриманні"',
+    shortLabel: 'Готівка',
+  },
+  {
+    id: 'bank-card',
+    label: 'Visa/MasterCard',
+    value: 'bank-card',
+    description: 'Оплата банківською картою онлайн',
+    shortLabel: 'Visa/MasterCard',
+  },
+  {
+    id: 'bank-transfer',
+    label: 'Безготівковий розрахунок',
+    value: 'bank-transfer',
+    description: 'Оплата через банківський переказ',
+    shortLabel: 'Безготівковий розрахунок',
+  },
 ];

@@ -10,6 +10,7 @@ interface Props {
   isLoading: boolean;
   onDepartmentSelect: (department: string) => void;
   onClear?: () => void;
+  hasUserSearched?: boolean; // Додаємо пропс для відстеження пошуку користувача
 }
 
 const DepartmentDropDown = ({
@@ -21,6 +22,7 @@ const DepartmentDropDown = ({
   isLoading,
   onDepartmentSelect,
   onClear,
+  hasUserSearched = false,
 }: Props) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -82,7 +84,7 @@ const DepartmentDropDown = ({
           ✕
         </button>
       )}
-      
+
       <ul
         className={`border-x border-b w-full overflow-y-scroll absolute top-full left-0 bg-white shadow-lg
               transition-all duration-300 ease-in-out max-h-[250px] z-50
@@ -111,14 +113,29 @@ const DepartmentDropDown = ({
           ))}
 
         {!isLoading && departments.length === 0 && departmentName && !error && (
-          <li className="p-4 text-sm text-gray-500 text-center">
-            Відділення не знайдено
-          </li>
+          <li className="p-4 text-sm text-gray-500 text-center">Відділення не знайдено</li>
         )}
 
-        {error && (
+        {error && hasUserSearched && (
           <li className="p-4 text-sm text-red-500 text-center">
-            Помилка пошуку. Спробуйте ще раз.
+            <div className="flex flex-col items-center gap-2">
+              <span>Тимчасові проблеми з пошуком відділень</span>
+              <span className="text-xs text-gray-500">Перевірте інтернет-з&apos;єднання</span>
+              <button
+                onClick={() => {
+                  setDepartmentError(false);
+                  if (departmentName.trim()) {
+                    // Trigger search again by clearing and setting department name
+                    const currentValue = departmentName;
+                    setDepartmentName('');
+                    setTimeout(() => setDepartmentName(currentValue), 100);
+                  }
+                }}
+                className="text-xs text-blue-600 hover:text-blue-800 underline cursor-pointer"
+              >
+                Спробувати знову
+              </button>
+            </div>
           </li>
         )}
       </ul>
