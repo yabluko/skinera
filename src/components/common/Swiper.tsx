@@ -41,7 +41,7 @@ const SwiperComponent = ({
         {images.map((image, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out rounded-xl sm:rounded-2xl lg:rounded-[2rem] overflow-hidden ${
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out rounded-xl sm:rounded-2xl lg:rounded-4xl overflow-hidden ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -49,7 +49,7 @@ const SwiperComponent = ({
             <Image src={image.src} alt={image.alt} fill className="object-cover" />
 
             {/* Тінь */}
-            <div className="absolute inset-0 rounded-xl sm:rounded-2xl lg:rounded-[2rem] shadow-lg"></div>
+            <div className="absolute inset-0 rounded-xl sm:rounded-2xl lg:rounded-4xl shadow-lg"></div>
           </div>
         ))}
       </div>

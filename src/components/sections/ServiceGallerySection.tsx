@@ -199,7 +199,7 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
                 return (
                   <div
                     key={index}
-                    className={`overflow-hidden rounded-xl bg-white flex-shrink-0 ${isJumping ? 'transition-none' : 'transition-all duration-500 ease-out'
+                    className={`overflow-hidden rounded-xl bg-white shrink-0 ${isJumping ? 'transition-none' : 'transition-all duration-500 ease-out'
                       } ${isMiddle && visibleCounts === 3 ? 'z-20 shadow-2xl' : 'shadow-md'}`}
                     style={{
                       transform:

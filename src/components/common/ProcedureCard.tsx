@@ -22,10 +22,10 @@ const ProcedureCard = ({ title, description, image, price, time, list }: Props) 
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
         </div>
       ) : (
-        <div className="h-48 w-full bg-gradient-to-br from-brand-100 via-brand-50 to-brand-200 flex items-center justify-center">
+        <div className="h-48 w-full bg-linear-to-br from-brand-100 via-brand-50 to-brand-200 flex items-center justify-center">
           <div className="w-16 h-16 rounded-full bg-white/30 flex items-center justify-center">
             <svg
               className="w-8 h-8 text-brand-600"
@@ -45,11 +45,11 @@ const ProcedureCard = ({ title, description, image, price, time, list }: Props) 
       )}
 
       {/* Контент */}
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-6 flex flex-col grow">
         <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-brand-600 transition-colors">
           {title}
         </h3>
-        <p className="text-gray-500 text-sm mb-4 flex-grow">{description}</p>
+        <p className="text-gray-500 text-sm mb-4 grow">{description}</p>
 
         {/* Показуємо ціну та час тільки якщо вони є */}
         {(price !== undefined || time !== undefined) && (
@@ -76,7 +76,7 @@ const ProcedureCard = ({ title, description, image, price, time, list }: Props) 
           {list.map((item, index) => {
             return (
               <li className="flex items-start gap-3" key={index}>
-                <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
                   <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"

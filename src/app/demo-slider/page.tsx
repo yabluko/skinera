@@ -94,7 +94,7 @@ export default function SliderDemoPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Slider Section */}
-      <section className="relative mt-16 bg-gradient-to-b from-purple-50 to-pink-50 py-20">
+      <section className="relative mt-16 bg-linear-to-b from-purple-50 to-pink-50 py-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -199,7 +199,7 @@ export default function SliderDemoPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 bg-gradient-to-b from-purple-50 to-white rounded-2xl shadow-lg">
+            <div className="text-center p-8 bg-linear-to-b from-purple-50 to-white rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
                   className="w-8 h-8 text-white"
@@ -221,7 +221,7 @@ export default function SliderDemoPage() {
               </p>
             </div>
 
-            <div className="text-center p-8 bg-gradient-to-b from-pink-50 to-white rounded-2xl shadow-lg">
+            <div className="text-center p-8 bg-linear-to-b from-pink-50 to-white rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
                   className="w-8 h-8 text-white"
@@ -243,7 +243,7 @@ export default function SliderDemoPage() {
               </p>
             </div>
 
-            <div className="text-center p-8 bg-gradient-to-b from-brand-50 to-white rounded-2xl shadow-lg">
+            <div className="text-center p-8 bg-linear-to-b from-brand-50 to-white rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
                   className="w-8 h-8 text-white"

@@ -71,7 +71,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
       </div>
 
       {/* Контейнер для назви та ціни */}
-      <div className="flex-grow p-2 text-center flex flex-col justify-center">
+      <div className="grow p-2 text-center flex flex-col justify-center">
         <div className="mb-2 h-32 flex flex-col items-center ">
           {/* Бренд */}
           <p className="text-gray-500 text-xs font-normal">{product.brand}</p>

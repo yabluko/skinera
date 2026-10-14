@@ -61,9 +61,9 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
       case 'square':
         return 'aspect-square';
       case 'portrait':
-        return 'aspect-[3/4]';
+        return 'aspect-3/4';
       default:
-        return 'aspect-[16/9]';
+        return 'aspect-video';
     }
   };
 
@@ -99,7 +99,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
                 />
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                  <div className="bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full text-sm font-medium text-gray-700">
                     PREV
                   </div>
                 </div>
@@ -125,7 +125,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative flex-shrink-0 h-full"
+                  className="relative shrink-0 h-full"
                   style={{ width: `${100 / images.length}%` }}
                 >
                   <Image
@@ -139,7 +139,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
 
                   {/* Overlay with title and description */}
                   {(image.title || image.description) && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent p-6">
                       {image.title && (
                         <h3 className="text-white text-xl font-semibold mb-2">{image.title}</h3>
                       )}
@@ -173,7 +173,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
                 />
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                  <div className="bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full text-sm font-medium text-gray-700">
                     NEXT
                   </div>
                 </div>
@@ -187,14 +187,14 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 backdrop-blur-sm z-30"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 backdrop-blur-xs z-30"
               aria-label="Previous image"
             >
               <ChevronLeftIcon className="w-6 h-6" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 backdrop-blur-sm z-30"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 backdrop-blur-xs z-30"
               aria-label="Next image"
             >
               <ChevronRightIcon className="w-6 h-6" />
@@ -225,7 +225,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
 
       {/* Image counter */}
       {images.length > 1 && (
-        <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm z-30">
+        <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-xs z-30">
           {currentIndex + 1} / {images.length}
         </div>
       )}

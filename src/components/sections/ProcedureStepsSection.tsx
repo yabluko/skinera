@@ -38,7 +38,7 @@ const ProcedureStepsSection = () => {
             {steps.map((step, index) => (
               <div key={step.number} className="relative">
                 {/* Step Number */}
-                <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 p-4 z-0 absolute left-[10%] top-0 transform -translate-x-1/2 -translate-y-1/2">
+                <div className="shrink-0 w-20 h-20 rounded-2xl bg-brand-300 p-4 z-0 absolute left-[10%] top-0 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="text-2xl font-bold text-gray-700">{step.number}</span>
                 </div>
 
@@ -116,7 +116,7 @@ const ProcedureStepsSection = () => {
                     <h3 className="text-2xl font-bold text-gray-800 mb-2 ">{steps[0].title}</h3>
                     <p className="text-lg text-gray-600">{steps[0].description}</p>
                   </div>
-                  <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0 ">
+                  <div className="shrink-0 w-20 h-20 rounded-2xl bg-brand-300 absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0 ">
                     <span className="text-2xl font-bold text-gray-700 absolute bottom-1/2 right-1/2">
                       {steps[0].number}
                     </span>
@@ -129,7 +129,7 @@ const ProcedureStepsSection = () => {
             <div className="relative flex items-center justify-start">
               <div className="text-center max-w-xs">
                 <div className="flex items-center gap-6 relative">
-                  <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
+                  <div className="shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
                     <span className="text-2xl font-bold text-gray-700 absolute bottom-1/2 right-1/2">
                       {steps[1].number}
                     </span>
@@ -150,7 +150,7 @@ const ProcedureStepsSection = () => {
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">{steps[3].title}</h3>
                     <p className="text-lg text-gray-600">{steps[3].description}</p>
                   </div>
-                  <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
+                  <div className="shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
                     <span className="text-2xl font-bold text-gray-700 absolute bottom-1/2 right-1/2">
                       {steps[3].number}
                     </span>
@@ -163,7 +163,7 @@ const ProcedureStepsSection = () => {
             <div className="relative flex items-center justify-start ">
               <div className="text-center max-w-xs">
                 <div className="flex items-center gap-6 relative">
-                  <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
+                  <div className="shrink-0 w-20 h-20 rounded-2xl bg-brand-300 flex items-center justify-center absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 z-0">
                     <span className="text-2xl font-bold text-gray-700 absolute bottom-1/2 right-1/2">
                       {steps[2].number}
                     </span>

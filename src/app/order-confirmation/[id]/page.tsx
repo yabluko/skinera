@@ -124,7 +124,7 @@ const OrderConfirmationPage = () => {
                 key={index}
                 className="flex items-center space-x-4 py-2 border-b border-gray-100 last:border-b-0"
               >
-                <div className="w-16 h-16 bg-gray-100 rounded-lg flex-shrink-0 relative">
+                <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0 relative">
                   {item.image_url && (
                     <Image
                       src={item.image_url}

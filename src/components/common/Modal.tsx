@@ -55,7 +55,7 @@ const Modal = ({
 
   return (
     <div
-      className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999] pointer-events-auto animate-in fade-in duration-300"
+      className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-xs flex items-center justify-center z-9999 pointer-events-auto animate-in fade-in duration-300"
       onClick={onClose}
     >
       <div

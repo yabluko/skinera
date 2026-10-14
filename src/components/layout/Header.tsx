@@ -34,7 +34,7 @@ const Header = () => {
             <div className="bg-brand-600 rounded-full p-1">
               <Image src="/icon/icon.svg" alt="Skinera Logo" width={32} height={32} />
             </div>
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-purple-600 to-pink-600">
               Skinera
             </span>
           </Link>
@@ -68,7 +68,7 @@ const Header = () => {
           {/* Бургер-меню для мобільних екранів */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 focus:outline-hidden"
           >
             <svg
               className="w-6 h-6 text-gray-600"

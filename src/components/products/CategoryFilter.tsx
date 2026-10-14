@@ -53,7 +53,7 @@ const CategoryFilter = memo(
           touch-manipulation active:scale-95
           ${
             selectedCategories.length === 0
-              ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg shadow-pink-200 transform scale-105'
+              ? 'bg-linear-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg shadow-pink-200 transform scale-105'
               : 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50 hover:shadow-md sm:hover:scale-105'
           }
         `}
@@ -93,7 +93,7 @@ const CategoryFilter = memo(
                 animate-fade-in-up touch-manipulation active:scale-95
                 ${
                   selectedCategories.includes(category)
-                    ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg shadow-pink-200 scale-105'
+                    ? 'bg-linear-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg shadow-pink-200 scale-105'
                     : 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50 hover:shadow-md sm:hover:scale-105'
                 }
               `}
@@ -128,7 +128,7 @@ const CategoryFilter = memo(
 
               {/* Gradient overlay on hover */}
               {!selectedCategories.includes(category) && (
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-400 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                <span className="absolute inset-0 rounded-full bg-linear-to-r from-pink-400 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
               )}
             </button>
           ))}
@@ -142,7 +142,7 @@ const CategoryFilter = memo(
             inline-flex items-center px-3 py-2 sm:px-4 sm:py-2.5 mt-3 text-xs sm:text-sm font-medium
             text-pink-600 hover:text-pink-700 border border-pink-200 
             rounded-full hover:bg-pink-50 transition-all duration-300 group
-            focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50
+            focus:outline-hidden focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50
             sm:hover:scale-105 hover:shadow-md relative overflow-hidden touch-manipulation active:scale-95
           "
           >
@@ -179,7 +179,7 @@ const CategoryFilter = memo(
             <div className="flex items-center justify-between p-2 sm:p-3 bg-pink-50 border border-pink-200 rounded-lg animate-fade-in">
               <div className="flex items-center text-xs sm:text-sm text-pink-700">
                 <svg
-                  className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0"
+                  className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -195,7 +195,7 @@ const CategoryFilter = memo(
               </div>
               <button
                 onClick={clearAllCategories}
-                className="text-pink-600 hover:text-pink-800 p-1 rounded-full hover:bg-pink-100 transition-colors duration-200 flex-shrink-0 touch-manipulation"
+                className="text-pink-600 hover:text-pink-800 p-1 rounded-full hover:bg-pink-100 transition-colors duration-200 shrink-0 touch-manipulation"
                 title="Очистити всі фільтри"
               >
                 <svg

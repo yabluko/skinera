@@ -72,7 +72,7 @@ const DepartmentDropDown = ({
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         className="peer w-full border-0 border-b border-[#ebebeb] px-5 py-3
-            focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none
+            focus:outline-hidden focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none
             focus:placeholder-transparent"
       />
       {departmentName && (
@@ -105,7 +105,7 @@ const DepartmentDropDown = ({
           departments.map((department: NovaPoshtaDepartmentsData, index) => (
             <li
               key={index}
-              className="p-4 hover:bg-slate-50 break-words whitespace-normal text-sm cursor-pointer"
+              className="p-4 hover:bg-slate-50 wrap-break-word whitespace-normal text-sm cursor-pointer"
               onMouseDown={() => handleItemSelect(department.Description)}
             >
               {department.Description}

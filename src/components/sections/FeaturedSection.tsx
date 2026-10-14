@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const FeaturedSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-white to-gray-50">
+    <section className="py-16 bg-linear-to-br from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         {/* 
           Варіант 1: Фото зліва, текст справа (поточний)
@@ -28,7 +28,7 @@ const FeaturedSection = () => {
                 priority
               />
               {/* Градієнтний оверлей для кращого контрасту */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
 
               {/* Декоративний елемент */}
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-brand-600 rounded-full opacity-20 blur-xl" />
@@ -105,7 +105,7 @@ const FeaturedSection = () => {
               className="space-y-3 md:space-y-4"
             >
               <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center shrink-0">
                   <svg
                     className="w-3 h-3 md:w-4 md:h-4 text-white"
                     fill="currentColor"
@@ -124,7 +124,7 @@ const FeaturedSection = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center shrink-0">
                   <svg
                     className="w-3 h-3 md:w-4 md:h-4 text-white"
                     fill="currentColor"
@@ -143,7 +143,7 @@ const FeaturedSection = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-5 h-5 md:w-6 md:h-6 bg-brand-600 rounded-full flex items-center justify-center shrink-0">
                   <svg
                     className="w-3 h-3 md:w-4 md:h-4 text-white"
                     fill="currentColor"

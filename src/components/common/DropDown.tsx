@@ -41,7 +41,7 @@ const DropDown = ({ labelName, arrOptions }: Props) => {
         </label>
         <div
           className="w-full border-0 border-b border-[#ebebeb] pl-5 pr-10 py-3 cursor-pointer
-              focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none
+              focus:outline-hidden focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none
               bg-white relative"
           onClick={() => setIsDeliveryDropdownOpen(!isDeliveryDropdownOpen)}
         >
@@ -74,7 +74,7 @@ const DropDown = ({ labelName, arrOptions }: Props) => {
           {arrOptions.map(option => (
             <li
               key={option.id}
-              className="p-4 hover:bg-slate-50 break-words text-sm cursor-pointer border-gray-100
+              className="p-4 hover:bg-slate-50 wrap-break-word text-sm cursor-pointer border-gray-100
                   transition-colors duration-150"
               onClick={() => handleDeliveryOptionSelect(option)}
             >

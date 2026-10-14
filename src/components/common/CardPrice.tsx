@@ -36,7 +36,7 @@ const CardPrice = ({ title, description, price, time, list }: Props) => {
           return (
             <li className="flex items-start gap-2" key={index}>
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="w-5 h-5 text-green-500 mt-0.5 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

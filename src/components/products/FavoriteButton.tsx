@@ -127,7 +127,7 @@ export default function FavoriteButton({
             ${sizeClasses[size]}
             ${className}
             absolute top-2 right-2 z-10
-            bg-white/90 backdrop-blur-sm
+            bg-white/90 backdrop-blur-xs
             rounded-full shadow-lg
             flex items-center justify-center
             transition-all duration-300

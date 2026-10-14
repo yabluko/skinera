@@ -126,7 +126,7 @@ const CategoryModal = memo(
                         p-3 rounded-xl text-sm font-medium transition-all duration-300 border-2
                         ${
                           localSelectedCategories.includes(category)
-                            ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg scale-105'
+                            ? 'bg-linear-to-r from-pink-500 to-pink-600 text-white border-pink-500 shadow-lg scale-105'
                             : 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50 hover:scale-105'
                         }
                       `}
@@ -160,7 +160,7 @@ const CategoryModal = memo(
             <div className="bg-gray-50 px-6 py-4 sm:px-6">
               <button
                 onClick={handleApply}
-                className="w-full inline-flex justify-center rounded-xl bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-600 hover:to-pink-700 transition-all duration-300"
+                className="w-full inline-flex justify-center rounded-xl bg-linear-to-r from-pink-500 to-pink-600 px-4 py-3 text-sm font-semibold text-white shadow-xs hover:from-pink-600 hover:to-pink-700 transition-all duration-300"
               >
                 Застосувати
               </button>
