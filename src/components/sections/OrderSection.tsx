@@ -22,7 +22,7 @@ const OrderSection = () => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="p-4 md:p-6 w-full lg:min-w-[440px] border-[#ebebeb] border-[1px] h-auto">
+    <div className="p-4 md:p-6 w-full lg:min-w-[440px] border-[#ebebeb] border h-auto">
       <div className="border-b border-[#ebebeb] pb-4">
         <h2 className="text-[#212121] text-lg md:text-xl font-bold">Ваше замовлення</h2>{' '}
       </div>
@@ -34,7 +34,7 @@ const OrderSection = () => {
           {cart.map((item, index) => {
             return (
               <li className="flex flex-1 py-3 border-b border-[#ebebeb]" key={index}>
-                <div className="relative w-16 h-20 md:w-24 md:h-28 flex-shrink-0">
+                <div className="relative w-16 h-20 md:w-24 md:h-28 shrink-0">
                   <Image
                     alt="Appereance of how looking cream for face care"
                     fill
@@ -53,17 +53,17 @@ const OrderSection = () => {
                   <div className="flex justify-between items-center mt-2 md:mt-3">
                     <div className="relative flex items-center">
                       <button
-                        className="w-8 h-8 md:w-10 md:h-10 border-[#ebebeb] border-[1px] relative
-                  before:content-[''] before:absolute before:w-[12px] md:before:w-[16px] before:border-t-[1px] before:border-black before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
+                        className="w-8 h-8 md:w-10 md:h-10 border-[#ebebeb] border relative
+                  before:content-[''] before:absolute before:w-[12px] md:before:w-[16px] before:border-t before:border-black before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       ></button>
                       <span className="w-8 md:w-10 h-full flex items-center justify-center text-xs md:text-sm">
                         {item.quantity}
                       </span>
                       <button
-                        className="w-8 h-8 md:w-10 md:h-10 border-[#ebebeb] border-[1px] relative
-                  before:content-[''] before:absolute before:w-[12px] md:before:w-[16px] before:border-t-[1px] before:border-black before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2
-                  after:content-[''] after:absolute after:h-[12px] md:after:h-[16px] after:border-l-[1px] after:border-black after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2"
+                        className="w-8 h-8 md:w-10 md:h-10 border-[#ebebeb] border relative
+                  before:content-[''] before:absolute before:w-[12px] md:before:w-[16px] before:border-t before:border-black before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2
+                  after:content-[''] after:absolute after:h-[12px] md:after:h-[16px] after:border-l after:border-black after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       ></button>
                     </div>

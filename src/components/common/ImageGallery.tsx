@@ -67,7 +67,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-3">
+                  <div className="bg-white/90 backdrop-blur-xs rounded-full p-3">
                     <svg
                       className="w-6 h-6 text-gray-800"
                       fill="none"

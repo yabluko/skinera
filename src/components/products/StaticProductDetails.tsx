@@ -331,7 +331,7 @@ function ProductDetailsAccordion({ product }: { product: Product }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-xs border border-gray-200 overflow-hidden">
       {/* Description */}
       {product.content?.description && (
         <Section id="description" title="Опис">

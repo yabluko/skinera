@@ -405,7 +405,7 @@ const PriceSlider = ({
         >
           {/* Активная область */}
           <div
-            className="absolute h-2 sm:h-3 bg-gradient-to-r from-pink-400 to-pink-600 rounded-lg shadow-sm transition-all duration-200 pointer-events-none"
+            className="absolute h-2 sm:h-3 bg-linear-to-r from-pink-400 to-pink-600 rounded-lg shadow-xs transition-all duration-200 pointer-events-none"
             style={{
               left: `${getLeftPosition()}%`,
               width: `${getRightPosition() - getLeftPosition()}%`,

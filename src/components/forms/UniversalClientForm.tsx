@@ -280,7 +280,7 @@ const UniversalClientForm = ({
 
       {/* Перший ряд: Повне ім'я */}
       <div className="mb-8 flex flex-col md:flex-row justify-start gap-2">
-        <label htmlFor="fullName" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+        <label htmlFor="fullName" className="text-gray-700 text-sm min-w-[140px] shrink-0">
           Ім&apos;я та прізвище <span className="text-red-500">*</span>
         </label>
         <div className="relative flex-1">
@@ -289,10 +289,10 @@ const UniversalClientForm = ({
             id="fullName"
             value={fullName}
             onChange={e => setFullName(e.target.value)}
-            className="w-fit border-2 border-[#ebebeb] p-2 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            className="w-fit border-2 border-[#ebebeb] p-2 focus:outline-hidden focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <span
-            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+            className="absolute left-0 bottom-0 h-px w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
               origin-left focus-within:w-full"
           ></span>
@@ -301,7 +301,7 @@ const UniversalClientForm = ({
 
       {/* Другий ряд: Телефон */}
       <div className="mb-8 flex flex-col md:flex-row justify-start  gap-2">
-        <label htmlFor="phone" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+        <label htmlFor="phone" className="text-gray-700 text-sm min-w-[140px] shrink-0">
           Телефон <span className="text-red-500">*</span>
         </label>
         <div className="relative flex-1">
@@ -323,10 +323,10 @@ const UniversalClientForm = ({
             }}
             inputMode="tel"
             id="phone"
-            className="w-fit border-2 border-[#ebebeb] p-2 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+            className="w-fit border-2 border-[#ebebeb] p-2 focus:outline-hidden focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
           />
           <span
-            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+            className="absolute left-0 bottom-0 h-px w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
               origin-left focus-within:w-full z-10"
           ></span>
@@ -335,7 +335,7 @@ const UniversalClientForm = ({
 
       {/* Третій ряд: Email */}
       <div className="mb-8 flex flex-col md:flex-row justify-start   gap-2">
-        <label htmlFor="email" className="text-gray-700 text-sm min-w-[140px] flex-shrink-0">
+        <label htmlFor="email" className="text-gray-700 text-sm min-w-[140px] shrink-0">
           E-mail
         </label>
         <div className="relative flex-1">
@@ -345,12 +345,12 @@ const UniversalClientForm = ({
             value={email}
             onChange={e => setEmail(e.target.value)}
             readOnly={!!session?.user}
-            className={`w-fit border-2 p-2 border-[#ebebeb] focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none ${
+            className={`w-fit border-2 p-2 border-[#ebebeb] focus:outline-hidden focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none ${
               session?.user ? 'bg-gray-50 cursor-not-allowed' : ''
             }`}
           />
           <span
-            className="absolute left-0 bottom-0 h-[1px] w-0 bg-purple-600 
+            className="absolute left-0 bottom-0 h-px w-0 bg-purple-600 
               transition-all duration-500 ease-in-out 
               origin-left focus-within:w-full z-10"
           ></span>

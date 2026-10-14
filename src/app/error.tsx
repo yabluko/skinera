@@ -42,7 +42,7 @@ export default function Error({
             <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
               Деталі помилки (тільки в режимі розробки)
             </summary>
-            <pre className="mt-2 p-4 bg-gray-100 rounded text-xs overflow-auto">
+            <pre className="mt-2 p-4 bg-gray-100 rounded-sm text-xs overflow-auto">
               {error.message}
               {error.stack && '\n\n' + error.stack}
             </pre>

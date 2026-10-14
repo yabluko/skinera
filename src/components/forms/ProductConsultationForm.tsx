@@ -86,7 +86,7 @@ const ProductConsultationForm = ({ productName, productBrand }: ProductConsultat
             type="text"
             placeholder="Ваше ім'я"
             {...register('name', { required: 'Імʼя обовʼязкове' })}
-            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
+            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
               errors.name ? 'border-red-500 focus:ring-red-400' : ''
             }`}
           />
@@ -127,7 +127,7 @@ const ProductConsultationForm = ({ productName, productBrand }: ProductConsultat
                 message: 'Введіть коректний номер телефону',
               },
             })}
-            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
+            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
               errors.phone ? 'border-red-500 focus:ring-red-400' : ''
             }`}
           />

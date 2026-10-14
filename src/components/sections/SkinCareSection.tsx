@@ -65,7 +65,7 @@ const SkinCareSection = ({ data }: Props) => {
                   key={index}
                   className="flex gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 bg-[#F7F7F7] rounded-xl sm:rounded-2xl hover:bg-[#F0F0F0] transition-colors duration-200"
                 >
-                  <item.Icon className="text-purple-500 pt-1 flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7" />
+                  <item.Icon className="text-purple-500 pt-1 shrink-0 w-6 h-6 sm:w-7 sm:h-7" />
                   <div className="flex-1 min-w-0">
                     <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 leading-tight">
                       {item.title}

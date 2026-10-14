@@ -17,7 +17,7 @@ const CategoryButton = memo(({ onClick, selectedCategories }: CategoryButtonProp
         bg-white border border-gray-200 rounded-xl 
         hover:border-pink-300 hover:bg-white 
         transition-all duration-300 group
-        shadow-sm hover:shadow-md
+        shadow-xs hover:shadow-md
         flex-1 min-w-0
       "
     >

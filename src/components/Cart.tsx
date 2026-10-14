@@ -23,7 +23,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
   if (!cart.length) {
     return (
       <div
-        className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[100] pointer-events-auto"
+        className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-xs flex items-center justify-center z-100 pointer-events-auto"
         onClick={onClose}
       >
         <div
@@ -48,7 +48,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
 
   return (
     <div
-      className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[100] pointer-events-auto"
+      className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-xs flex items-center justify-center z-100 pointer-events-auto"
       onClick={onClose}
     >
       <div
@@ -76,7 +76,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
                 {/* Mobile Layout: Image + Info in one row */}
                 <div className="flex items-center gap-3 w-full sm:w-auto ">
                   {/* Product Image */}
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 relative">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 relative">
                     <Image
                       src={item.image_url ?? '/images/placeholder.jpg'}
                       alt={item.name.en}
@@ -100,7 +100,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
 
                   {/* Remove Button - Mobile (top right) */}
                   <button
-                    className="sm:hidden text-gray-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-lg flex-shrink-0"
+                    className="sm:hidden text-gray-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-lg shrink-0"
                     onClick={() => onRemoveFromCart(item.id)}
                   >
                     ×
@@ -108,9 +108,9 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
                 </div>
 
                 {/* Mobile: Quantity and Price row */}
-                <div className="flex items-center justify-between w-full sm:w-auto sm:flex-shrink-0 sm:gap-4">
+                <div className="flex items-center justify-between w-full sm:w-auto sm:shrink-0 sm:gap-4">
                   {/* Quantity Controls */}
-                  <div className="flex items-center bg-white rounded-full shadow-sm border border-gray-200">
+                  <div className="flex items-center bg-white rounded-full shadow-xs border border-gray-200">
                     <button
                       className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-600 hover:text-brand-600 transition-colors font-semibold text-sm sm:text-base"
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
@@ -137,7 +137,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
 
                   {/* Remove Button - Desktop */}
                   <button
-                    className="hidden sm:flex text-gray-400 hover:text-red-500 transition-colors w-10 h-10 items-center justify-center rounded-full hover:bg-gray-200 text-xl flex-shrink-0"
+                    className="hidden sm:flex text-gray-400 hover:text-red-500 transition-colors w-10 h-10 items-center justify-center rounded-full hover:bg-gray-200 text-xl shrink-0"
                     onClick={() => onRemoveFromCart(item.id)}
                   >
                     ×
@@ -172,7 +172,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               </span>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-[100%] md:w-[70%]  align-center mx-auto ">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full md:w-[70%]  align-center mx-auto ">
             <button
               className="order-2 sm:order-1 flex-1 bg-gray-100 text-gray-700 px-4 sm:px-6 py-3 rounded-full hover:bg-gray-200 transition-colors font-semibold text-sm sm:text-base"
               onClick={onClose}

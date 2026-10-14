@@ -21,9 +21,9 @@ const ProductList = dynamic(() => import('@/components/products/ProductList'), {
             className="bg-white rounded-lg shadow-lg flex flex-col h-full w-full max-w-xs"
           >
             <div className="w-full h-[350px] sm:h-48 md:h-64 bg-gray-200 animate-pulse rounded-lg"></div>
-            <div className="flex-grow p-4 text-center">
-              <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4 mx-auto mb-2"></div>
-              <div className="h-4 bg-gray-200 animate-pulse rounded w-1/4 mx-auto"></div>
+            <div className="grow p-4 text-center">
+              <div className="h-4 bg-gray-200 animate-pulse rounded-sm w-3/4 mx-auto mb-2"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded-sm w-1/4 mx-auto"></div>
             </div>
           </div>
         ))}
@@ -247,7 +247,7 @@ const ProductsPage = () => {
         <button
           onClick={() => handlePageChange(pagination.page - 1)}
           disabled={pagination.page === 1}
-          className="px-4 py-2 rounded bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 rounded-sm bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           ←
         </button>
@@ -255,7 +255,7 @@ const ProductsPage = () => {
         <button
           onClick={() => handlePageChange(pagination.page + 1)}
           disabled={pagination.page === pagination.totalPages}
-          className="px-4 py-2 rounded bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 rounded-sm bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           →
         </button>
@@ -308,7 +308,7 @@ const ProductsPage = () => {
                     scrollToTop();
                   }
                 }}
-                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm shadow-sm hover:shadow-md"
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-hidden hover:border-pink-300 hover:bg-white text-sm shadow-xs hover:shadow-md"
               />
               {searchQuery && (
                 <div className="absolute inset-y-0 right-0 flex items-center">

@@ -1,12 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 
 // Declare variables at top level
 let storage: ReturnType<typeof getStorage> | null = null;
 let db: ReturnType<typeof getFirestore> | null = null;
-let auth: ReturnType<typeof getAuth> | null = null;
 
 // Skip initialization during Vercel build
 if (process.env.VERCEL_BUILD) {
@@ -17,7 +15,6 @@ if (process.env.VERCEL_BUILD) {
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
     projectId,
     // Bucket should be *.appspot.com, not *.firebasestorage.app
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
@@ -35,7 +32,6 @@ if (process.env.VERCEL_BUILD) {
       app = initializeApp(firebaseConfig);
       storage = getStorage(app);
       db = getFirestore(app);
-      auth = getAuth(app);
       console.log('✅ Firebase initialized successfully');
     } catch (error) {
       console.warn('Firebase client initialization failed:', error);
@@ -46,7 +42,7 @@ if (process.env.VERCEL_BUILD) {
 }
 
 // Export services
-export { storage, db, auth };
+export { storage, db };
 
 // Note: Using production Firestore, not emulator
 
