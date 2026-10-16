@@ -2,15 +2,12 @@
 
 // import AdvantagesSection from '@/components/sections/AdvantagesSection';
 import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
+import HomeHeroSection from '@/components/sections/HomeHeroSection';
 import './global.css';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, Suspense } from 'react';
 import { toast } from 'react-toastify';
-
-const HeroSectionPrimary = dynamic(() => import('@/components/sections/HeroSectionPrimary'), {
-  loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
-});
 
 const FeaturedSection = dynamic(() => import('@/components/sections/FeaturedSection'), {
   loading: () => <div className="w-full h-[500px] bg-gray-100 animate-pulse" />,
@@ -84,7 +81,7 @@ export default function Home() {
       <Suspense fallback={null}>
         <LoginSuccessToast />
       </Suspense>
-      <HeroSectionPrimary />
+      <HomeHeroSection />
       <FeaturedSection />
       <ServicesSection />
       {/* <AdvantagesSection /> */}

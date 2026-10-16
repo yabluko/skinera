@@ -11,14 +11,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
-    "init-db": "ts-node src/scripts/init-db.ts",
-    "check-static": "ts-node src/scripts/check-static-generation.ts",
-    "migrate-to-firestore": "tsx src/scripts/migrate-to-firestore.ts",
-    "migrate-users": "tsx src/scripts/migrate-users-to-firebase.ts",
-    "migrate-images": "tsx src/scripts/migrate-images-to-firebase.ts",
-    "migrate-full": "tsx src/scripts/full-migration.ts",
-    "test-firestore": "tsx src/scripts/test-firestore-connection.ts",
-    "test-firebase": "tsx src/scripts/test-firebase-connection.ts"
+    "check-static": "ts-node src/scripts/check-static-generation.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -31,8 +24,6 @@
     "bcryptjs": "^3.0.2",
     "country-state-city": "^3.2.1",
     "crypto-js": "^4.2.0",
-    "firebase": "^13.0.0",
-    "firebase-admin": "^14.5.0",
     "framer-motion": "^12.4.7",
     "next": "^15.5.27",
     "next-auth": "^4.24.11",
@@ -67,7 +58,6 @@
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "overrides": {
-    "@grpc/grpc-js": "^1.14.0",
     "postcss": "$postcss"
   }
 }

@@ -16,16 +16,18 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
   ];
 
   return (
-    <nav className={`${isMobile ? 'flex flex-col gap-4' : 'hidden md:flex items-center gap-6'}`}>
+    <nav
+      className={`${isMobile ? 'flex flex-col gap-4' : 'hidden md:flex items-center gap-1 lg:gap-3'}`}
+    >
       <ServicesDropdown isMobile={isMobile} onNavigate={onNavigate} />
       {navItems.map(({ path, label }) => (
         <Link
           key={path}
           href={path}
-          className={`py-2 px-4 rounded-full transition-colors ${
+          className={`py-2 px-4 rounded-full text-[13.5px] font-medium transition-colors ${
             isActive(path)
-              ? 'text-brand-600 bg-brand-50 font-medium'
-              : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
+              ? 'text-skin-ink bg-skin-pink-soft font-semibold'
+              : 'text-skin-ink/80 hover:text-skin-ink'
           }`}
           onClick={() => isMobile && onNavigate?.()}
         >
