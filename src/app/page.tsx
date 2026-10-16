@@ -3,6 +3,8 @@
 // import AdvantagesSection from '@/components/sections/AdvantagesSection';
 import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
 import HomeHeroSection from '@/components/sections/HomeHeroSection';
+import HomeServicesSection from '@/components/sections/HomeServicesSection';
+import { useHeroGlide } from '@/hooks/useHeroGlide';
 import './global.css';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -15,10 +17,6 @@ const FeaturedSection = dynamic(() => import('@/components/sections/FeaturedSect
 
 const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), {
   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
-});
-
-const ServicesSection = dynamic(() => import('@/components/sections/ServicesSection'), {
-  loading: () => <div className="w-full h-[800px] bg-gray-100 animate-pulse" />,
 });
 
 const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSection'), {
@@ -76,14 +74,16 @@ function LoginSuccessToast() {
 }
 
 export default function Home() {
+  useHeroGlide('services');
+
   return (
     <div className="flex flex-col items-center min-h-screen w-full">
       <Suspense fallback={null}>
         <LoginSuccessToast />
       </Suspense>
       <HomeHeroSection />
+      <HomeServicesSection />
       <FeaturedSection />
-      <ServicesSection />
       {/* <AdvantagesSection /> */}
       <AboutSection />
       <ReviewsSection />

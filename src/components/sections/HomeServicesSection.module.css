@@ -1,0 +1,423 @@
+/* Home services — index of directions (tabs) + photo stage (redesign C5). Spec: specs/services/SPEC.md */
+
+.svc {
+  --svc-mute: color-mix(in srgb, var(--ink) 74%, var(--paper));
+  position: relative;
+  padding-block: clamp(72px, 10vw, 140px);
+  padding-inline: var(--gutter);
+  font-size: 15px;
+}
+
+/* blush wash: soft light spilling from under the hero card, fading into paper.
+   z-index -1 without a stacking context on .svc → paints behind the hero card, above the canvas */
+.svc::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  top: clamp(-220px, -14vw, -96px);
+  height: clamp(560px, 62vw, 960px);
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 22%,
+    color-mix(in srgb, var(--pink) 35%, var(--pink-soft)) 0%,
+    var(--pink-soft) 30%,
+    color-mix(in srgb, var(--pink-soft) 60%, var(--paper)) 60%,
+    transparent 100%
+  );
+  /* fade the box's top edge so no seam shows beside the hero card */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%);
+  mask-image: linear-gradient(to bottom, transparent, #000 35%);
+  pointer-events: none;
+}
+
+/* wash stays dark until the visitor reaches services, then glows in (JS only) */
+:global(.js) .svc::before {
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-out);
+}
+
+:global(.js) .svc[data-glow]::before {
+  opacity: 1;
+}
+
+.wrap {
+  max-width: 1344px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: start;
+}
+
+/* ---------- head ---------- */
+.head {
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.kicker::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--pink);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.title em {
+  font-style: italic;
+}
+
+.intro {
+  margin: 20px 0 0;
+  max-width: 460px;
+  opacity: 0.82;
+}
+
+.note {
+  margin: 24px 0 0;
+  font-size: 12.5px;
+  color: var(--svc-mute);
+}
+
+/* ---------- atoms ---------- */
+.num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--svc-mute);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 2.8vw, 40px);
+  line-height: 1.05;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.price small {
+  margin-right: 4px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--svc-mute);
+}
+
+.price sup {
+  font-size: 0.5em;
+  color: var(--svc-mute);
+}
+
+.desc {
+  margin: 0;
+  max-width: 420px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: var(--ink);
+  color: var(--warm-white);
+  cursor: pointer;
+  transition:
+    background 0.25s var(--ease),
+    color 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+
+.cta:hover {
+  background: var(--pink-deep);
+  transform: translateY(-1px);
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: -14px;
+  border-radius: 50%;
+  background: var(--warm-white);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+/* ---------- panels (default: stacked) ---------- */
+.tabs {
+  display: none;
+}
+
+.panels {
+  display: grid;
+  gap: 48px;
+}
+
+.photo {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--pink-soft);
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 24px;
+}
+
+.infoTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--svc-mute);
+}
+
+.list li:not(:last-child)::after {
+  content: '·';
+  margin: 0 8px;
+}
+
+.ctaWrap {
+  align-self: flex-start;
+}
+
+/* ≥ 601px: info in two columns under the photo */
+@media (min-width: 601px) {
+  .info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px clamp(24px, 3vw, 48px);
+    align-items: start;
+  }
+
+  .infoTop {
+    grid-column: 1;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .desc {
+    grid-column: 1;
+  }
+
+  .list {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  .ctaWrap {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+  }
+}
+
+/* ≥ 901px + JS: tab list drives a single photo stage */
+@media (min-width: 901px) {
+  :global(.js) .tabs {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--warm-gray-mid);
+  }
+
+  :global(.js) .tab {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: baseline;
+    gap: 12px;
+    width: 100%;
+    padding: 22px 0;
+    border: 0;
+    border-bottom: 1px solid var(--warm-gray-mid);
+    background: none;
+    color: var(--svc-mute);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.3s var(--ease);
+  }
+
+  :global(.js) .tab::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 0;
+    height: 1px;
+    background: var(--pink-deep);
+    transition: width 0.5s var(--ease);
+  }
+
+  :global(.js) .tab:hover,
+  :global(.js) .tab[aria-selected='true'] {
+    color: var(--ink);
+  }
+
+  :global(.js) .tab[aria-selected='true']::before {
+    width: 100%;
+  }
+
+  :global(.js) .tab b {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(32px, 3.2vw, 46px);
+    line-height: 1.05;
+  }
+
+  :global(.js) .tab .num {
+    color: inherit;
+    font-size: 18px;
+  }
+
+  :global(.js) .tab small {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  :global(.js) .panels {
+    gap: 0;
+  }
+
+  :global(.js) .panel {
+    grid-area: 1 / 1;
+    align-self: start;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.6s var(--ease),
+      visibility 0s 0.6s;
+  }
+
+  :global(.js) .panel.isActive {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s var(--ease);
+  }
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .ctaWrap {
+    align-self: stretch;
+  }
+
+  .cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------- one-time scroll reveal (JS only; without it content is static) ---------- */
+:global(.js) .svc [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* photos wipe in top → bottom instead of sliding */
+:global(.js) .svc [data-reveal='clip'] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1100ms var(--ease-in-out);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+:global(.js) .svc [data-reveal][data-visible] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.js) .svc::before {
+    transition-duration: 400ms;
+  }
+
+  /* keep the fade, drop movement and the wipe */
+  :global(.js) .svc [data-reveal],
+  :global(.js) .svc [data-reveal='clip'] {
+    opacity: 0;
+    transform: none;
+    clip-path: none;
+    transition: opacity 200ms ease;
+    transition-delay: 0ms;
+  }
+
+  :global(.js) .svc [data-reveal][data-visible] {
+    opacity: 1;
+  }
+
+  .cta,
+  :global(.js) .panel,
+  :global(.js) .tab,
+  :global(.js) .tab::before {
+    transition: none;
+  }
+}
