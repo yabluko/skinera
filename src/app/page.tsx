@@ -4,6 +4,7 @@
 import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
 import HomeHeroSection from '@/components/sections/HomeHeroSection';
 import HomeServicesSection from '@/components/sections/HomeServicesSection';
+import HomeResultsSection from '@/components/sections/HomeResultsSection';
 import { useHeroGlide } from '@/hooks/useHeroGlide';
 import './global.css';
 import dynamic from 'next/dynamic';
@@ -83,6 +84,7 @@ export default function Home() {
       </Suspense>
       <HomeHeroSection />
       <HomeServicesSection />
+      <HomeResultsSection />
       <FeaturedSection />
       {/* <AdvantagesSection /> */}
       <AboutSection />
