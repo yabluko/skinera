@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T15:32:31.894534+00:00",
+  "title": "Design System: Skinera",
+  "extensions": {
+    "colorMeta": {
+      "corinthian-pink": {
+        "role": "primary",
+        "displayName": "Corinthian Pink",
+        "canonical": "#e9a9a4",
+        "tonalRamp": [
+          "#3e120f",
+          "#6b201a",
+          "#982d25",
+          "#c53a30",
+          "#d7645b",
+          "#e3928c",
+          "#efc1bd",
+          "#faecea"
+        ]
+      },
+      "pink-deep": {
+        "role": "primary",
+        "displayName": "Dusk Rose",
+        "canonical": "#c97a76",
+        "tonalRamp": [
+          "#371716",
+          "#5f2825",
+          "#873935",
+          "#b04a45",
+          "#c5716d",
+          "#d79c99",
+          "#e8c6c4",
+          "#f8eded"
+        ]
+      },
+      "pink-soft": {
+        "role": "primary",
+        "displayName": "Blush Veil",
+        "canonical": "#f6deda",
+        "tonalRamp": [
+          "#3e160f",
+          "#6b251a",
+          "#983525",
+          "#c54530",
+          "#d76d5b",
+          "#e3998c",
+          "#efc4bd",
+          "#faedea"
+        ]
+      },
+      "lavender": {
+        "role": "secondary",
+        "displayName": "Grayish Lavender",
+        "canonical": "#bfb6c9",
+        "tonalRamp": [
+          "#26212c",
+          "#42384c",
+          "#5e506c",
+          "#79688d",
+          "#988aa8",
+          "#b7adc2",
+          "#d6d0dc",
+          "#f2f0f4"
+        ]
+      },
+      "lavender-soft": {
+        "role": "secondary",
+        "displayName": "Lavender Mist",
+        "canonical": "#e6e1ec",
+        "tonalRamp": [
+          "#251e2f",
+          "#413351",
+          "#5c4974",
+          "#785f96",
+          "#9782b0",
+          "#b6a8c8",
+          "#d5cddf",
+          "#f2eff5"
+        ]
+      },
+      "lavender-deep": {
+        "role": "secondary",
+        "displayName": "Deep Heather",
+        "canonical": "#7d7290",
+        "tonalRamp": [
+          "#25222b",
+          "#403a4a",
+          "#5b536a",
+          "#776c89",
+          "#968da5",
+          "#b5afc0",
+          "#d5d1db",
+          "#f2f1f4"
+        ]
+      },
+      "warm-ink": {
+        "role": "neutral",
+        "displayName": "Warm Ink",
+        "canonical": "#3a3330",
+        "tonalRamp": [
+          "#2a2523",
+          "#49403c",
+          "#675b55",
+          "#86766f",
+          "#a3958f",
+          "#beb5b1",
+          "#dad5d2",
+          "#f3f2f1"
+        ]
+      },
+      "warm-gray": {
+        "role": "neutral",
+        "displayName": "Warm Gray",
+        "canonical": "#8a817a",
+        "tonalRamp": [
+          "#292624",
+          "#47423e",
+          "#645e58",
+          "#827973",
+          "#a09892",
+          "#bcb7b3",
+          "#d9d6d4",
+          "#f3f2f1"
+        ]
+      },
+      "warm-gray-mid": {
+        "role": "neutral",
+        "displayName": "Linen",
+        "canonical": "#d6cfc8",
+        "tonalRamp": [
+          "#2c2621",
+          "#4c4239",
+          "#6c5e51",
+          "#8c7a69",
+          "#a8998a",
+          "#c2b8ad",
+          "#dcd6d0",
+          "#f4f2f0"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#efebe7",
+        "tonalRamp": [
+          "#2e261f",
+          "#504235",
+          "#715e4b",
+          "#937a62",
+          "#ad9985",
+          "#c6b8a9",
+          "#ded6ce",
+          "#f5f2f0"
+        ]
+      },
+      "warm-white": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "canonical": "#fffdfb",
+        "tonalRamp": [
+          "#4c2600",
+          "#854200",
+          "#bd5e00",
+          "#f57a00",
+          "#ff9933",
+          "#ffb870",
+          "#ffd6ad",
+          "#fff2e5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero wordmark only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings; one italic emotive word."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Service names."
+      },
+      "brand": {
+        "displayName": "Brand",
+        "purpose": "Header logotype."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Lead and descriptive copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase kickers."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Pill controls and nav."
+      }
+    },
+    "shadows": [
+      {
+        "name": "media-tile",
+        "value": "0 24px 50px -20px rgba(38, 28, 26, .6)",
+        "purpose": "Floating hero video tile only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.22, 0.61, 0.36, 1)",
+        "purpose": "General transitions, hero rise, button hover."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Entrances / scroll-reveal fade+rise (700ms)."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Clip-path photo wipe (1100ms)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "services-stack",
+        "value": "600px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "768px"
+      },
+      {
+        "name": "nav-md",
+        "value": "800px"
+      },
+      {
+        "name": "services-tabs",
+        "value": "901px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink pill CTA on paper (header, services «Записатися»).",
+      "html": "<button class=\"ds-btn ds-btn-ink\">Записатися <span class=\"ds-arrow\">→</span></button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 24px;border:0;border-radius:999px;font-family:var(--font-body,Manrope,system-ui,sans-serif);font-size:14px;font-weight:600;letter-spacing:.01em;cursor:pointer;transition:background .25s cubic-bezier(.22,.61,.36,1),color .25s cubic-bezier(.22,.61,.36,1),transform .25s cubic-bezier(.22,.61,.36,1)} .ds-btn:hover{transform:translateY(-1px)} .ds-btn:focus-visible{outline:2px solid #7d7290;outline-offset:3px} .ds-arrow{display:grid;place-items:center;width:28px;height:28px;margin-right:-14px;border-radius:50%;background:#fffdfb;color:#3a3330;font-size:14px} .ds-btn-ink{background:#3a3330;color:#fffdfb} .ds-btn-ink:hover{background:#c97a76}"
+    },
+    {
+      "name": "Pink Button",
+      "kind": "button",
+      "refersTo": "button-pink",
+      "description": "Corinthian Pink pill CTA on dark media (hero).",
+      "html": "<div style=\"background:#3a3330;padding:24px;border-radius:18px\"><button class=\"ds-btn ds-btn-pink\">Записатися на консультацію <span class=\"ds-arrow\">→</span></button></div>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 24px;border:0;border-radius:999px;font-family:var(--font-body,Manrope,system-ui,sans-serif);font-size:14px;font-weight:600;letter-spacing:.01em;cursor:pointer;transition:background .25s cubic-bezier(.22,.61,.36,1),color .25s cubic-bezier(.22,.61,.36,1),transform .25s cubic-bezier(.22,.61,.36,1)} .ds-btn:hover{transform:translateY(-1px)} .ds-btn:focus-visible{outline:2px solid #7d7290;outline-offset:3px} .ds-arrow{display:grid;place-items:center;width:28px;height:28px;margin-right:-14px;border-radius:50%;background:#fffdfb;color:#3a3330;font-size:14px} .ds-btn-pink{background:#e9a9a4;color:#3a3330} .ds-btn-pink:hover{background:#c97a76;color:#fffdfb}"
+    },
+    {
+      "name": "Glass Chip",
+      "kind": "chip",
+      "refersTo": "chip-glass",
+      "description": "Frosted service link on hero media only.",
+      "html": "<div style=\"background:linear-gradient(135deg,#6b5a55,#3a3330);padding:24px;border-radius:18px\"><a class=\"ds-chip\" href=\"#\">Лазерна епіляція</a></div>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;padding:9px 16px;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-size:12.5px;font-weight:600;color:#fffdfb;text-decoration:none;background:rgba(255,253,251,.14);border:1px solid rgba(255,253,251,.32);backdrop-filter:blur(12px);transition:background .25s} .ds-chip:hover{background:rgba(255,253,251,.3)} .ds-chip:focus-visible{outline:2px solid #7d7290;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Frosted-paper header: logo, Manrope links, ink pill CTA.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-logo\">Skinera</span><nav><a href=\"#\" class=\"ds-link\">Послуги</a><a href=\"#\" class=\"ds-link ds-link-active\">Контакти</a></nav><button class=\"ds-nav-cta\">Записатися</button></header>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px;padding:0 24px;background:rgba(239,235,231,.9);backdrop-filter:blur(12px);color:#3a3330;font-family:Manrope,system-ui,sans-serif} .ds-logo{font-family:'Cormorant Garamond','Times New Roman',serif;font-size:26px;font-weight:500;letter-spacing:.02em} .ds-link{padding:8px 16px;border-radius:999px;font-size:13.5px;font-weight:500;color:rgba(58,51,48,.8);text-decoration:none;transition:color .2s} .ds-link:hover{color:#3a3330} .ds-link-active{background:#f6deda;color:#3a3330;font-weight:600} .ds-link:focus-visible,.ds-nav-cta:focus-visible{outline:2px solid #7d7290;outline-offset:3px} .ds-nav-cta{min-height:46px;padding:0 24px;border:0;border-radius:999px;background:#3a3330;color:#fffdfb;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s,transform .25s} .ds-nav-cta:hover{background:#c97a76;transform:translateY(-1px)}"
+    },
+    {
+      "name": "Service Tab",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Service index row: numeral, light serif name, placeholder price; Dusk Rose underline when selected.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab\" aria-selected=\"true\"><span class=\"ds-num\">01</span><b>Лазерна епіляція</b><small>від 450 ₴*</small></button><button class=\"ds-tab\" aria-selected=\"false\"><span class=\"ds-num\">02</span><b>Догляд за обличчям</b><small>від 700 ₴*</small></button></div>",
+      "css": ".ds-tabs{display:grid;border-top:1px solid #d6cfc8;max-width:540px;background:#efebe7} .ds-tab{position:relative;display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:12px;padding:22px 0;border:0;border-bottom:1px solid #d6cfc8;background:none;text-align:left;cursor:pointer;color:color-mix(in srgb,#3a3330 74%,#efebe7);font-family:Manrope,system-ui,sans-serif;transition:color .3s} .ds-tab::before{content:'';position:absolute;left:0;bottom:-1px;width:0;height:1px;background:#c97a76;transition:width .5s cubic-bezier(.22,.61,.36,1)} .ds-tab:hover,.ds-tab[aria-selected=true]{color:#3a3330} .ds-tab[aria-selected=true]::before{width:100%} .ds-tab:focus-visible{outline:2px solid #7d7290;outline-offset:3px} .ds-tab b{font-family:'Cormorant Garamond','Times New Roman',serif;font-weight:300;font-size:38px;line-height:1.05} .ds-num{font-family:'Cormorant Garamond',serif;font-size:18px} .ds-tab small{font-size:13px;font-weight:600}"
+    },
+    {
+      "name": "Section Heading",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Kicker with pink hairline + light serif headline with one italic word.",
+      "html": "<div class=\"ds-head\"><p class=\"ds-kicker\">Послуги</p><h2 class=\"ds-h2\">Три напрямки <em>догляду</em></h2></div>",
+      "css": ".ds-head{color:#3a3330;background:#efebe7;padding:16px} .ds-kicker{display:flex;align-items:center;gap:14px;margin:0 0 14px;font-family:Manrope,system-ui,sans-serif;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase} .ds-kicker::before{content:'';width:40px;height:1px;background:#e9a9a4} .ds-h2{margin:0;font-family:'Cormorant Garamond','Times New Roman',serif;font-weight:300;font-size:64px;line-height:1;letter-spacing:-.01em} .ds-h2 em{font-style:italic}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Studio",
+    "overview": "Skinera should feel like stepping into a warm, softly lit treatment room where nobody is rushing you. The palette is skin-adjacent and powdery (Corinthian pink, warm paper, grayish lavender) anchored by a warm near-black ink rather than pure black. Real studio footage and photography carry the emotion; the interface sits calmly on top of it.\n\nType pairs a light, high-contrast Cormorant Garamond display (whispered, large, editorial) with a sturdy Manrope sans for everything functional. Depth comes from the media itself — warm photo and video, film grain, a soft vignette, frosted glass chips — and from soft light on paper (the blush wash), not from shadowed UI. Components are soft and confident: full pills, solid ink or pink fills, a white arrow disc, a 1px lift on hover. Sections below the hero return to paper: calm, airy, generous space; the hero stays the one dark, media-heavy moment.",
+    "keyCharacteristics": [
+      "Warm, powdery palette; ink is warm brown-black, never pure black.",
+      "Light serif display at very large sizes; sans for all UI text.",
+      "Media-first hero inside a large rounded card inset from the viewport; paper sections after it.",
+      "Flat UI; glass and grain live on media.",
+      "Pill shapes for every interactive control.",
+      "Slow, gentle motion: staggered rise-in, slow image zoom, one-time scroll reveals; reduced motion respected."
+    ],
+    "rules": [
+      {
+        "name": "The Warm Black Rule",
+        "body": "Darks are always derived from Warm Ink (rgba(58,51,48,α) or rgba(38,28,26,α)); never pure black or cool grays.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blush Rule",
+        "body": "Corinthian Pink is the single accent per view; lavender supports, never competes in the same element.",
+        "section": "colors"
+      },
+      {
+        "name": "The Legacy Palette Rule",
+        "body": "The old magenta palette (Tailwind `brand-50…700`, `backgroundPink`, `backgroundYellow`, `pinkCustom`, `grayCustom`) is legacy. Never use it in new or touched UI; migrate to the `skin-*` / CSS-variable palette when a legacy screen is edited.",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif Speaks, Sans Works Rule",
+        "body": "Cormorant only for wordmark, headlines, service names, prices and numerals; every control, label and paragraph is Manrope.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass-On-Media Rule",
+        "body": "Frosted glass appears only over photo/video; the fixed header is the single exception.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Light-Not-Shadow Rule",
+        "body": "On paper, separation comes from space and soft light (the blush wash), not from drop shadows or heavy rules.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do let real studio media carry the hero; overlay copy on a warm ink shade gradient.",
+      "Do use Cormorant at weight 300 for display and headline sizes and Manrope for all functional text.",
+      "Do keep every control a pill and every icon button a circle.",
+      "Do use Muted Ink, not Warm Gray, for small text on paper.",
+      "Do mark placeholder prices with `*` and a visible footnote until real prices exist.",
+      "Do keep motion slow and gentle: hero `rise` stagger (0.9s, 90ms steps); one-time scroll reveals (700ms ease-out, 14px rise, 110ms steps; photos wipe in with clip-path over 1100ms). Fire reveals once, gate them on the `.js` class, and fall back to a plain fade under `prefers-reduced-motion`.",
+      "Do use the easing tokens: `--ease` (general), `--ease-out` (entrances), `--ease-in-out` (wipes / on-screen movement)."
+    ],
+    "donts": [
+      "Don't use pure black, cool grays, or saturated non-palette hues.",
+      "Don't use the legacy `brand-*` magenta palette or `backgroundPink` / `pinkCustom` in new or touched UI.",
+      "Don't add drop shadows to flat UI; depth belongs to media and soft light.",
+      "Don't separate paper sections with heavy rules or boxes; use space and the blush wash.",
+      "Don't crop photos with `object-fit: cover` outside the hero; reframe in the file.",
+      "Don't present placeholder stats, ratings or prices as real (see PRODUCT.md)."
+    ]
+  }
+}

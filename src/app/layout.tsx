@@ -109,8 +109,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html
+      lang="uk"
+      className={`${cormorant.variable} ${manrope.variable}`}
+      suppressHydrationWarning
+    >
       <head>
+        {/* `.js` gates JS-only layouts (e.g. home services tabs); without it content stays stacked */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
         <StructuredData type="home" />
       </head>
       <body
