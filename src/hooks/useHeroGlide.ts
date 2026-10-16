@@ -23,10 +23,12 @@ const ease = bezier(0.77, 0, 0.175, 1);
 const DURATION = 1400;
 // swallow trackpad inertia after landing so it doesn't overshoot past the target
 const SETTLE = 450;
+// space kept between the fixed header and the target's content after landing
+const LAND_GAP = 32;
 const SCROLL_KEYS = new Set(['ArrowDown', 'PageDown', ' ']);
 
 /**
- * Downward scroll inside the hero glides once to the target section (top aligned under the
+ * Downward scroll inside the hero glides once to the target section (content aligned under the
  * fixed header). Upward scroll and everything below the target stay native.
  * Off for prefers-reduced-motion and while a modal is open.
  */
@@ -43,7 +45,10 @@ export function useHeroGlide(targetId: string) {
       if (!el) return null;
       const header =
         parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 0;
-      return Math.round(el.getBoundingClientRect().top + window.scrollY - header);
+      // skip most of the section's top padding so its content, not empty space, fills the view
+      const pad = parseFloat(getComputedStyle(el).paddingTop) || 0;
+      const skip = Math.max(0, pad - LAND_GAP);
+      return Math.round(el.getBoundingClientRect().top + window.scrollY + skip - header);
     };
 
     const canGlide = () => {
