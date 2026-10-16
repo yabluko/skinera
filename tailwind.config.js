@@ -21,7 +21,25 @@ module.exports = {
                 '18xl': '168rem', // 2688px
                 '19xl': '176rem', // 2816px
             },
+            fontFamily: {
+                display: ['var(--font-cormorant)', 'Times New Roman', 'serif'],
+                body: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+            },
             colors: {
+                // Redesign palette ("The Quiet Studio")
+                skin: {
+                    pink: '#e9a9a4',
+                    'pink-deep': '#c97a76',
+                    'pink-soft': '#f6deda',
+                    lavender: '#bfb6c9',
+                    'lavender-soft': '#e6e1ec',
+                    'lavender-deep': '#7d7290',
+                    ink: '#3a3330',
+                    gray: '#8a817a',
+                    'gray-mid': '#d6cfc8',
+                    paper: '#efebe7',
+                    white: '#fffdfb',
+                },
                 backgroundYellow: '#FCEFE7',
                 backgroundPink: '#F5E6ED',
                 background: "var(--background)",

@@ -87,10 +87,10 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
       <div className="flex flex-col ">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`py-2 px-4 rounded-full transition-colors ${
+          className={`py-2 px-4 rounded-full text-[13.5px] font-medium transition-colors ${
             isServicesActive
-              ? 'text-brand-600 bg-brand-50 font-medium'
-              : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
+              ? 'text-skin-ink bg-skin-pink-soft font-semibold'
+              : 'text-skin-ink/80 hover:text-skin-ink'
           }`}
         >
           <span>Послуги</span>
@@ -104,8 +104,8 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
                 href={service.path}
                 className={`block py-2 px-4 rounded-lg transition-colors text-sm ${
                   pathname === service.path
-                    ? 'text-brand-600 bg-brand-50 font-medium'
-                    : 'text-gray-600 hover:text-brand-600 hover:bg-gray-50'
+                    ? 'text-skin-ink bg-skin-pink-soft font-semibold'
+                    : 'text-skin-ink/80 hover:text-skin-ink'
                 }`}
                 onClick={handleServiceClick}
               >
@@ -127,10 +127,10 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
       onMouseLeave={handleMouseLeave}
     >
       <button
-        className={`py-2 px-4 rounded-full transition-colors ${
+        className={`py-2 px-4 rounded-full text-[13.5px] font-medium transition-colors ${
           isServicesActive
-            ? 'text-brand-600 bg-brand-50 font-medium'
-            : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
+            ? 'text-skin-ink bg-skin-pink-soft font-semibold'
+            : 'text-skin-ink/80 hover:text-skin-ink'
         }`}
       >
         <span>Послуги</span>
@@ -144,7 +144,7 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
       />
 
       <div
-        className={`absolute top-full left-0 mt-1 w-80 bg-white rounded-xl shadow-lg border border-gray-100 pt-3 pb-2 z-50 transition-all duration-200 ease-in-out ${
+        className={`absolute top-full left-0 mt-1 w-72 bg-skin-white rounded-[18px] shadow-lg border border-skin-gray-mid pt-3 pb-2 z-50 transition-all duration-200 ease-in-out ${
           isOpen
             ? 'opacity-100 visible transform translate-y-0'
             : 'opacity-0 invisible transform -translate-y-2 pointer-events-none'
@@ -156,14 +156,14 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
           <Link
             key={service.path}
             href={service.path}
-            className={`block px-4 py-3 hover:bg-gray-100 transition-colors ${
-              pathname === service.path ? 'bg-brand-50' : ''
+            className={`block px-4 py-3 hover:bg-skin-paper transition-colors ${
+              pathname === service.path ? 'bg-skin-pink-soft' : ''
             }`}
             onClick={handleServiceClick}
           >
             <div
               className={`font-medium ${
-                pathname === service.path ? 'text-brand-600' : 'text-gray-900'
+                pathname === service.path ? 'text-skin-ink' : 'text-skin-ink/85'
               }`}
             >
               {service.label}

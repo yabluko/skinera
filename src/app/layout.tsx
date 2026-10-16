@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Cormorant_Garamond, Geist, Geist_Mono, Manrope } from 'next/font/google';
 import './global.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -18,6 +18,18 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: '--font-cormorant',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
+});
+
+const manrope = Manrope({
+  variable: '--font-manrope',
+  subsets: ['latin', 'cyrillic'],
 });
 
 export const metadata: Metadata = {
@@ -97,7 +109,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk">
+    <html lang="uk" className={`${cormorant.variable} ${manrope.variable}`}>
       <head>
         <StructuredData type="home" />
       </head>

@@ -10,5 +10,5 @@ export default function Main({ children }: MainProps) {
   const pathname = usePathname();
   const isGrayBackground = pathname?.startsWith('/favorites');
 
-  return <main className={`grow ${isGrayBackground ? 'bg-gray-50' : ''}`}>{children}</main>;
+  return <main className={`grow overflow-x-clip ${isGrayBackground ? 'bg-gray-50' : ''}`}>{children}</main>;
 }

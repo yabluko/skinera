@@ -53,10 +53,37 @@
   }
 }
 
+:root {
+  --pink: #e9a9a4;
+  --pink-deep: #c97a76;
+  --pink-soft: #f6deda;
+  --warm-gray: #8a817a;
+  --warm-gray-mid: #d6cfc8;
+  --paper: #efebe7;
+  --ink: #3a3330;
+  --lavender: #bfb6c9;
+  --lavender-soft: #e6e1ec;
+  --lavender-deep: #7d7290;
+  --warm-white: #fffdfb;
+  --font-display: var(--font-cormorant), 'Times New Roman', serif;
+  --font-body: var(--font-manrope), system-ui, sans-serif;
+  --r-card: 28px;
+  --r-sm: 18px;
+  --gutter: clamp(16px, 3.5vw, 48px);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --header-h: 64px;
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lavender-deep);
+  outline-offset: 3px;
 }
 
 input:-webkit-autofill,
@@ -75,7 +102,7 @@ input:-webkit-autofill ~ label {
 }
 
 /* Custom select arrow positioning */
-select[name="delivery-option"] {
+select[name='delivery-option'] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
@@ -84,12 +111,12 @@ select[name="delivery-option"] {
 }
 
 /* Alternative approach using CSS transforms */
-select[name="delivery-option"]::-ms-expand {
+select[name='delivery-option']::-ms-expand {
   display: none;
 }
 
 /* For Firefox */
-select[name="delivery-option"] {
+select[name='delivery-option'] {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
