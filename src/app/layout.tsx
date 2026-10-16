@@ -100,10 +100,8 @@ export const metadata: Metadata = {
     google: 'your-google-verification-code', // Add your Google Search Console verification code
   },
   icons: {
-    icon: [
-      { url: '/icon/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon/favicon.png', type: 'image/png' },
-    ],
+    icon: [{ url: '/icon/logo-pink.png', type: 'image/png' }],
+    apple: '/icon/logo-pink.png',
   },
 };
 
