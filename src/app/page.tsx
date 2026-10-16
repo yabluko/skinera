@@ -5,7 +5,6 @@ import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
 import HomeHeroSection from '@/components/sections/HomeHeroSection';
 import HomeServicesSection from '@/components/sections/HomeServicesSection';
 import { useHeroGlide } from '@/hooks/useHeroGlide';
-import './global.css';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, Suspense } from 'react';

@@ -8,17 +8,17 @@ import ModalButton from '../common/ModalButton';
 import ContactForm from '../forms/ContactForm';
 import styles from './HomeHeroSection.module.css';
 
-// Montage: one label per clip, each clip CLIP_SECONDS long
-const CLIP_SECONDS = 2.9;
+// Montage (hero3, ~49.6s): label shown from `start` seconds until the next entry
 const MONTAGE_LABELS = [
-  'Апаратний догляд',
-  'Масаж обличчя',
-  'Догляд за обличчям',
-  'Лазерна епіляція',
-  'Масаж обличчя',
-  'Маска для обличчя',
-  'Апаратний масаж тіла',
-  'Догляд за обличчям',
+  { start: 0, label: 'Апаратний догляд' },
+  { start: 11, label: 'Масаж' },
+  { start: 17, label: 'Догляд за обличчям' },
+  { start: 20, label: 'Лазерна епіляція' },
+  { start: 25, label: 'Масаж обличчя' },
+  { start: 28, label: 'Лазерна епіляція' },
+  { start: 33, label: 'Масаж' },
+  { start: 37, label: 'Вакуумно-роликовий масаж' },
+  { start: 45, label: 'Догляд за обличчям' },
 ];
 
 const services = [
@@ -48,7 +48,8 @@ const HomeHeroSection = () => {
   const handleTimeUpdate = () => {
     const video = videoRef.current;
     if (!video) return;
-    const i = Math.floor((video.currentTime + 0.3) / CLIP_SECONDS) % MONTAGE_LABELS.length;
+    const t = video.currentTime;
+    const i = MONTAGE_LABELS.findLastIndex(({ start }) => t >= start);
     setLabelIndex(prev => (prev === i ? prev : i));
   };
 
@@ -84,17 +85,17 @@ const HomeHeroSection = () => {
             loop
             playsInline
             preload="auto"
-            poster="/media/hero2-montage-poster.webp"
+            poster="/media/hero3-montage-poster.webp"
             aria-label="Процедури в студії Skinera: догляд за обличчям, масаж, лазерна епіляція"
             onPlay={() => setIsPaused(false)}
             onPause={() => setIsPaused(true)}
             onTimeUpdate={handleTimeUpdate}
           >
-            <source src="/media/hero2-montage.webm" type="video/webm" />
-            <source src="/media/hero2-montage.mp4" type="video/mp4" />
+            <source src="/media/hero3-montage.webm" type="video/webm" />
+            <source src="/media/hero3-montage.mp4" type="video/mp4" />
           </video>
           <span className={styles.tileLabel}>
-            {MONTAGE_LABELS[labelIndex]} ·<br />
+            {MONTAGE_LABELS[labelIndex].label} ·<br />
             як це відбувається
           </span>
           <button
